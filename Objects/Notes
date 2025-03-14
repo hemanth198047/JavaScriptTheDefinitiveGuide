@@ -391,3 +391,11 @@ Consider a scenario where we are using properties of an object to represent some
 different user data in different scenarios but we are not interested in getting those properties deleted. In this case, we use Object.seal() so that properties values alone can be changed
 but they themselves can't be removed at any cost during the program execution time.
 
+It is important to know that Object.preventExtensions, Object.seal and Object.freeze returns the objects which are passed to them. So, this object can be used in chained operations.
+Example: Create a sealed object with a frozen prototype and a non-enumerable property
+
+var o = Object.seal(Object.create(Object.freeze({x:1}), {y:{value:2, writable:true}}))
+
+In the above code, first we are creating an object using Object.create(). For this we are passing 2 parameters, where first one is a frozen object that acts as the prototype of the newly
+created object and the second parameter is the a property descriptor that defines value and writable attributes. This newly created is then sealed and this is stored in variable v.
+
