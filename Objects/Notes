@@ -1,0 +1,173 @@
+  Before understanding the third way to create objects, we need to understand about prototypes.
+  Each property of an object has three properties associated with them
+     1. Writable : This decides whether a property can be writable or not
+     2. Enumerable : This decides whether a property can be listed in for/in loop or not
+     3. Configurable: This decides whether a property can be deleted or not, can be edited or not, can the other attributes of the property can be modified or not.
+  
+  Along with the above attributes for each of the property, there are 3 more attributes that are associated with the object itself. They are
+     1. Prototype: This attribute is responsible for inheriting properties of some other object into the current object
+     2. Class: This attribute defines the class of the current object
+     3. Extensible: This attribute defines whether an object can be extensible or not. This acts something like final keyword in java.
+ 
+
+Understanding prototypes
+========================
+A Prototype is an attribute associated with each of the object.
+
+All Objects created with the same object literal will have the same prototype. This prototype can be referenced as Object.prototype.
+Objects created with new keyword and the constructor function will use the prototype property of the constructor function. 
+For example, 
+    if the object is created using new Object(), then, prototype of this new object is same as prototype of Object i.e., Object.prototype
+    if the object is created using new Array(), then, prototype of this new object is same as prototype of Array i.e., Array.prototype
+    if the object is created using new Date(), then, prototype of this new object is same as prototype of Date i.e., Date.prototype
+    if the object is created using new RegExp(), then, prototype of this new object is same as prototype of RegExp i.e., RegExp.prototype
+
+Object.prototype is the only object that dont have any prototype and it doesn't inherit properties from any other object. All other objects will have prototypes and the root prototype
+for all of them will be Object.prototype. This linked series of prototype objects is called prototype chaining.
+
+ECMAScript 5 defines a method, Object.create(), that creates a new object, using its first argument as the prototype of the object created by Object.create(). This Object.create() function
+takes an optional second argument also which defines the properties of the new object being created.
+
+This Object.create() function is a static function and is not a method invoked on an individual objects. It use it, simply pass the desired prototype object
+For example: var o1 = Object.create({x:1,y:2});
+
+In the above example, object o1 will have it's prototype as {x:1,y:2}. This means, this object o1 will inherit the properties x and y that belongs to the prototype object.
+
+If you specify null as a prototype of the object created using Object.create(), then, that object will not inherit any properties, even the general toString() method because this method
+belongs to Object prototype.
+
+The ability to create an object with an arbitrary prototype is a powerful technique.
+
+Example of creating a new Object with an arbitrary prototype is described in app.js with method inherit().
+
+The main use of inheriting objects in this manner have their own advantages. This is mainly used to avoid any unintended modifications of an object. For example, We have an object and we
+want to pass this object to some library function. In order to avoid object getting damaged because of the library function, instead of sending the original object, we create a new object
+with this new object having original object as prototype and then send this new clone object to library function. In this way, we can avoid getting the original object damaged by the library function.
+
+In order to understand above concept thorougly, we need to understand how we can query an object and how properties can be set on the object.
+
+Querying and Setting the Object properties
+==========================================
+To obtain the value of a property from an object,use . or [] operators. 
+ 1. if we are using . operator to access a property, left hand side should be an object and right hand side should be a simple identifier that names a property in the object
+ 2. If we are using [] operator to access a property, left hand side should be an object and right hand side can be an expression that when evaluated returns a simple String identifier
+    that names a property in the object.
+
+Because of the above rules, in . operator usage, we can't use property names that has spaces in it. But in case of [] operator, we can use any expression and this includes names that have
+spaces in them as well.
+
+In order to set a property, then put it like 
+      <object>.<propertyName> = <value> 
+         or 
+      <object>[<propertyName>] = <value>
+
+Objects as Associative Arrays
+=============================
+First of all what is an associative array mean? let's understand that.
+Elements in an array will be accessed using numeric indices normally. When a element of an array is accessed using the names instead of numeric indices, then, we call that array as an
+associative array. this means, the values of each element of an array are associated with a name and when we want to access, we access them using their names.
+
+In Javscript, each object can act as an associative array where properties of an object can be accessed using array notation and name of the property. For example,
+Consider below object
+   var obj = {
+      x:1,
+      y:2
+   };
+
+We can access the property x from obj as obj["x"]. Here we are using array notation to access x from obj. This means, we are using the name of the property. This is why we call each object
+in javascript acts as an associative array.
+
+In order to understand the dynamic nature of objects in Javascript, we need to first understand what is strongly typed language mean and what is loosely typed language mean
+
+Strongly Typed Vs Loosely Typed
+-------------------------------
+The terms stronly typed and loosely typed refer to how a programming language handles the variables and their types. They describe the strictness or flexibility with which the language
+checks types at compile time or run time.
+
+In a strongly typed languages like java, types are enforced. This means, once a variable is defined as a certain type, then, this variable can be assigned with values of the same type only.
+Assigning these variables with values of some other type will not be allowed and a compile time error will be raised by the compiler. If we want to assign a value other than the variable type,
+then only approach is to perform casting to convert the value.
+
+In a loosely typed language like javascript, types are not enforced. this means, even after defining a variable with certain type, a value of any other type can be assigned to this variable
+and compiler will take care of automatic conversion of that value to the required type. the check for the types will be done only during the run time.
+
+In Strongly typed languages, errors with variable types can be caught early on during the compile time itself but in loosely typed languages this is not the case and the errors can be caught
+only during the run time.
+
+
+Summary of Differences between strongly typed and loosely typed languages:
+
+Feature	            Strongly Typed Language	                  Loosely Typed Language
+---------------------------------------------------------------------------------------------------
+Type Enforcement	  Strict enforcement of types	            Types are flexible, checked at runtime
+Type Checking	      Done at compile-time (or runtime)	        Done at runtime
+Reassignment	      Cannot reassign different types easily	Variables can be reassigned to different types
+Error Handling	      Type errors are caught early	            Type errors may not appear until runtime
+Examples	          Java, C++, Swift	                        JavaScript, Python, Ruby
+------------------------------------------------------------------------------------------------------
+
+Objects as Associative Arrays continued...
+
+Now, we know what is strongly typed and loosely typed languages mean. Javascript is a loosely typed language.
+In strongly typed languages, once an object is defined and properties and methods are defined inside those objects and their types are already decided, then, it cannot be changed dynamically.
+But, in case of loosely typed languages, even once a object is defined and properties and methods with certain types are already defined, that object can still be modified where
+we can add new properties, delete existing properties, change the type of properties and so on dynamically.
+
+So, using the associative array like nature of an object, properties in an object can be manipulated dynamically where a new property can be added to object on the fly.
+
+Inheritance
+============
+Java script objects will have a set of "Own" Properties. Along with this, they inherit some properties from their prototype objects as well. 
+
+Suppose you query a property x of an object o. if o does not have it's own property with the name x, then, the prototype of object o will be queried for the property x. If prototype of o does
+not have its own property by name x but has a prototype itself, then that prototype will be queried. In this way, query for the property will be performed until it reaches a point where
+the prototype itself is null. In this way, there will be a chain or linked list of prototype objects will be present for each of the object in javascript.
+
+
+var o = {} // o inherits object methods from Object.prototype
+o.x = 1; // o now has a own property by name x
+var p = inherit(o) //p inherits from o and Object.prototype
+p.y = 2; // p now has a own property by name you
+var q = inherit(p); // q inherits from o, p and Object.prototype
+q.z = 3; // q now has a own property by name z
+
+Now suppose we assign a value to the property x of the object o. If o has already own property x, then, value of this x will be changed. if x is not present in o, then, a new property by name x
+will be created in o and then value will be assigned to that property.
+if by any chance, o inherited x from some other object, then, that inherited property will be hidden with this o's own property.
+
+property assignment examines the prototype chain of an object. if object inherits a read only property and if we try to assign to that property, it will not be allowed. If assignment is
+allowed, then, property will be set or created in original object and the prototype object will never be touched.
+
+the fact that inheritence occurs only when querying properties but not setting properties allows us to selectively override inherited properties. We already know that properties in inherited
+prototype will never be touched or changed but there is one exception to this rule. If the inherited property is a setter method and when we try to assign a value to the property whose value
+is a setter method, in that case, the setter method will be called instead of setting the value. Even in this case of calling a setter method, if setter method modifies any properties, then,
+it will be able to do that on the original object only and not on the parent object. In this scenario also, parent object will be left untouched.
+
+
+Property Access errors
+------------------------
+property access expressions will not always returns or sets a property. let's see what happens in these scenarios while trying to query or set a property
+
+normally, in javascript, it is not an error to query a property that doesn't exist in an object. if a property is not present as an own property or inherited property in an object, then,
+undefined will be returned. However, it is an error to try to query a property on a object which doesn't exist. the null and undefined won't have any properties and is an error to query
+for properties on null or undefined. in order to avoid this type of errors, before accessing a property on an object, we first need to check whether the object exists or not.
+
+This applies even in case of setting a property on an object that doesn't exist where an error (TypeError) will be thrown. There are other scenarios also where a property might be defined as
+read only and trying to assign a value to that property will throw a TypeError. There might be a property that is non-configurable or non-writable and is read only and trying to assign a value
+to this property also throws a TypeError.
+
+The rules that specify when a property assignment succeeds and when it fails are intuitive but difficult to express concisely. an attempt to set a property p of an object o fails in these
+circumstances
+
+1. o has a own property p that is read-only.
+2. o has an inherited property p that is read-only
+3. o doesn't have an own property p; o doen't inherit a property p with a setter method, and o's extensible attribute is false. 
+
+Deleting Properties
+-------------------
+Delete operator deletes a property from an object and its single operand should be a property access expression. This operator doesn't operate on the value of the property but on the 
+property itself.
+it is worth to remember that delete property only deletes own properties but not the inherited properties. the delete expression evaluates to true only when the property is deleted or the property
+is not affected at all.
+delete does not remove properties whose configurable attribute is false. certain properties of built-in objects are not configurable, as are the properties of the global object created by
+variable declaration and function declaration.
