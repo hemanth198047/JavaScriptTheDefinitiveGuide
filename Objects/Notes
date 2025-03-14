@@ -415,4 +415,17 @@ needs to be serialized and which needs to be restored.
 
 Object Methods
 ==============
+We already came across many of the methods of an Object but in this section, we look at universal object methods that are defined on Object.prototype, but which are intended to be 
+overridden by other, more specialized cases.
 
+The toString() method: This method normally gives Object name and class of the object which is not useful in many of the cases. For this purpose, this method is overridden by many classes
+so that they give some meaningful string since this is the method that is called whenever a object is called for printing or concatenation etc.
+
+The toLocaleString(): This is similar to toString() except that it gives the meaningful string as per the locale
+
+The toJson() method: Object.prototype does not define a toJson() method but JSON.stringify() method looks for toJSON method to serialize any object. So, if toJson() method is present in
+an object, then this method is invoked by stringify() method to perform the serialization.
+
+The valueOf() method: this method is used to convert an object to a primitive type other than a string typically a number. Javascript calls this method automatically in a context where
+a primitive value is required. the default valueOf() method will not do anything interesting on its own but some default built-in objects define their own valueOf() method to perform
+some interesting stuff.
