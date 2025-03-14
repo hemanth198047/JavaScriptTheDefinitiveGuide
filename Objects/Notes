@@ -42,7 +42,8 @@ Example of creating a new Object with an arbitrary prototype is described in app
 
 The main use of inheriting objects in this manner have their own advantages. This is mainly used to avoid any unintended modifications of an object. For example, We have an object and we
 want to pass this object to some library function. In order to avoid object getting damaged because of the library function, instead of sending the original object, we create a new object
-with this new object having original object as prototype and then send this new clone object to library function. In this way, we can avoid getting the original object damaged by the library function.
+with this new object having original object as prototype and then send this new clone object to library function. In this way, we can avoid getting the original object damaged 
+by the library function.
 
 In order to understand above concept thorougly, we need to understand how we can query an object and how properties can be set on the object.
 
