@@ -268,7 +268,8 @@ ex: Object.getOwnPropertyDescriptor({x:1}, "x");
 
 in this example, we are getting the property descriptor for the property x present in object {x:1}
 
-To set a attribute for a property or to create a new property with the specified attributes, then, call Object.defineProperty() method, passing the object to be modified, name of the property to which attributes needs to be set and the property descriptor.
+To set a attribute for a property or to create a new property with the specified attributes, then, call Object.defineProperty() method, passing the object to be modified, 
+name of the property to which attributes needs to be set and the property descriptor.
 
 Example: refer app.js
 After adding the property x and printing the properties of the object, below is the output
@@ -281,4 +282,34 @@ enumerable.
 Now, we switched the writable property to false and then try to set the value of x in which case, it is not changed and fails silently.
 Since the property is still configurable, we can change the value of the property using the property descriptor
 
+Using this procedure, we can create a new property or modify existing property only if the property is own property and we can't use this to modify an inherited property.
+If we want to modify multiple properties at a time, then, use Object.defineProperties. First argument is the object that needs to be altered and second argument is an object
+that maps the properties to the object.
+
+Example below
+
+var p = Object.defineProperties({}, {
+    x : {value:1, writable:true,enumerable:true,configurable:true},
+    y : {value:1, writable:true,enumerable:true,configurable:true},
+    r : {
+        get: function() {
+            return Math.sqrt(this.x * this.x + this.y * this.y)
+        },
+        enumerable: true,
+        configurable: true
+    }
+});
+
+The same defineProperties will be used as second argument in Object.create() as well where the properties defined in this way will be used to set the properties for the newly created
+object. When we try to use this method to set the properties on an object when that operation is not allowed, then, a TypeError will be thrown. This can happen in the scenario where
+if the Configurable attribute of a property is set to false and then we try to change that using defineProperty() then TypeError will be thrown.
+
+It might fail even in the scenario where we try to add a property when the extensible attribute of the object is set to false, when we try to change the value of an attribute whose 
+writable attribute is already set to true, but there is an exception to this rule where if the configurable attribute is still true, in that case we can change the value of the property
+using the defineProperty().
+
+Earlier we described an extend function which copies the properties from one object to another. But in that method, we are not copying the getters and setters and also we are not
+copying the attributes of each of the properties. Now, with the knowledge of propertyDescriptors, we will enhance that method such that it will copy properties, attributes including the
+accessor properties. In this case, instead of defining it as a function, we define it as a new object method and is then added as non-enumerable property to Obejct.prototype. Please refer
+app.js for the details how we are doing it.
 

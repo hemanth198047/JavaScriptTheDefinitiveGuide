@@ -130,3 +130,26 @@ console.log("Writable is made false so x value not changed: " + o.x);
 
 Object.defineProperty(o, "x", {value:2});
 console.log("Since it is still configurable, value is changed: " + o.x);
+
+/**
+ * Add a non-enumerable extend() method to Object.prototype.
+ * This method extends the object on which it is called by copying properties from the object passed as its argument.
+ * All property attributes are copied, not just the property value.
+ * All own properties (even non-enumerable ones) of the argument object are copied unless a property with the same name
+ * already exists in the target object.
+ */
+Object.defineProperty(Object.prototype, "extend", {
+    writable: true,
+    enumerable: false,
+    configurable: true,
+    value: function(o) {
+        var names = Object.getOwnPropertyNames(o);
+        for (var i = 0; i < names.length; i++) {
+            if (names[i] in this) continue;
+            // Get property description from o
+            var desc = Object.getOwnPropertyDescriptor(o, names[i]);
+            // Use it to create property on this
+            Object.defineProperty(this, names[i], desc);
+        }
+    }
+});
