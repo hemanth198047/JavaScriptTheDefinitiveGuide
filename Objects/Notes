@@ -399,3 +399,20 @@ var o = Object.seal(Object.create(Object.freeze({x:1}), {y:{value:2, writable:tr
 In the above code, first we are creating an object using Object.create(). For this we are passing 2 parameters, where first one is a frozen object that acts as the prototype of the newly
 created object and the second parameter is the a property descriptor that defines value and writable attributes. This newly created is then sealed and this is stored in variable v.
 
+Serializing Objects
+===================
+Object Serialization is a process where the state of an object is converted to a string from which the object can be restored at some later point of time.
+ECMAScript 5 provides native functions JSON.stringify() and JSON.parse() methods to convert state of object to string using stringify() and then restoring the object using parse() method.
+
+These methods use the JSON format for data interchange and JSON stands for JavaScript Object Notation. The same native methods are not available in ECMAScript 3 but they can be supported
+using json2.js file.
+
+JSON Syntax is a subset of Javascript syntax and it can't represent all JS values. Objects, Arrays, Strings, finite numbers, true, false and null are supported and can be serialized and
+restored. NaN, Infinity, -Infinity are serialized as null. Dates are serialized as ISO formatted date strings and on deserialization, they will not be restored back to Date objects.
+Function, RegExp, Error objects and undefined values can't be serialized or restored. JSON.stringify() only serializes Own Properties but not inherited properties. 
+If a property can't be serialized, they simply be omitted from serialization. Both of these stringify and parse methods takes optional second parameter which specifies which properties
+needs to be serialized and which needs to be restored.
+
+Object Methods
+==============
+
