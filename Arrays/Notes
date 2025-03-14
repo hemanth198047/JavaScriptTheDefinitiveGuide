@@ -135,3 +135,183 @@ a.sort();
 a.sort(function(a,b) {
     return a-b;
 });
+
+concat()
+--------
+Array.concat() method creates and returns a new array that contains all the elements of the array on which concat() is invoked and then all the elements supplied in arguments. if any of the 
+arguments is array itself, then, it is array elements that concatenated but not the array itself. But this is applicable only for one level
+
+Example: refer app.js
+
+slice()
+-------
+this method returns a slice or subarray of given array. the 2 arguments specify the start and end of the slice to be returned where start is inclusive and end is exclusive this means, in the
+result, the element at start index will be present but the element at end index will not be present but element at end-1 index will be present.
+
+positive arguments represent left side iteration and negative arguments specifies right side iteration. this means, left side is from start of the array and right side is from end of the array.
+
+slice method will not modify the array on which it is invoked.
+It is important to understand that when the arguments are negative, the first negative argument should be less than the second negative argument to get proper results.
+
+splice()
+--------
+Array.splice() is a general method used to insert or delete elements from an array. Unlike splice() and concat(), splice modifies the array on which it is invoked.
+splice() can delete elements from an array or insert elements into an array or perform both operations at a time.
+elements of an array that comes after insertion or deletion points have their indexes adjusted accordingly.
+the first argument to splice() method indicates the insertion/deletion point which means the point at which either the insertion or deletion has to start.
+the second argument specifies the number of elements that needs to be deleted from the array.
+if this second argument is ommitted, then, from the start position all other elements of the array will be removed.
+splice() returns the array of removed elements. if no elements are removed, an empty array will be returned.
+the first 2 arguments specify the position from where deletion has to start and number of elements to be deleted, all the additional arguments specify the elements that needs to be
+    inserted into the array, starting at the position specified by the first argument.
+Refer app.js for example
+
+push() and pop()
+----------------
+these methods allows to work with arrays as if they are stacks. they modify the array on which they are invoked.
+push() add an element to the end of the array and returns the new length of the array
+pop() removes element at the end of the array, reduces the length and returns the removed element back
+
+unshift() and shift()
+--------------------
+these are very similar to push() and pop() but they act on the first element of the array instead of last element. unshift() adds element at the top of the array and shift() removes element
+from the top of the array.
+
+inserting a set of elements at the begining of the array inserts those complete set at the top of the array at one place but not in sorted order.
+
+toString() and toLocaleString()
+-------------------------------
+returns concatenated string of all elements of array converted to string and added together.
+
+ECMAScript 5 Array Methods
+---------------------------
+ECMAScript 5 defines 9 new array methods for iterating, mapping, filtering, reducing, testing and searching arrays. before delving into these methods, we need to generalize few things.
+many of these methods accepts a function as an argument and invoke that function once for each element or set of elements of the array. if the array is sparse, then, the function you pass
+will not be invoked on non-existent elements.
+
+In most case, the function you pass will be invoked with 3 arguments
+1. the element value
+2. the element index
+3. the array itself
+
+in most of the case, we will work only with the first argument and other 2 will be ignored. 
+most of the ECMAScript 5 arrays methods that accepts function as first argument also accepts an optional second argument. if the optional second argument is specified, then, the function
+specified as first argument will be invoked as a method of the object that is specified as second argument. that is, the second argument you pass will become this inside the function you
+specified as first argument. the return value of the function you pass is important, but different methods use that result in different ways. none of these methods modify the array on which
+these methods are invoked. If you pass a function to these methods, then, that function may modify the original array.
+
+forEach()
+----------
+this method invokes the function passed to it for each element. This method does not provide an option to terminate the iteration before all the elements in the array are consumed. If you 
+really want to terminate, then, the only way is to throw the exception and place the forEach in try block so that exception can be caught and handled approperiately.
+
+if the function passed to forEach() throws forEach.break, then the loop will terminate early
+Example:
+function forEach(a, f, t) {
+    try {
+        a.forEach(f, t);
+    }
+    catch (e) {
+        if (e == forEach.break) return;
+        else throw e;
+    }
+}
+forEach.break = new Error("StopIteration");
+
+
+map()
+-----
+map() method passes each element of array on which it was invoked to the function you specify, and then returns an array containing values returned from the function.
+Ex:
+var a = [1,2,3];
+var b = a.map(function(x) {
+    return x*x;
+});
+
+Here b will be [1,4,9];
+
+filter()
+---------
+this method will return a subset of the array on which it was invoked. a function is passed to this method which performs the filtering of elements based on a predicate passed to the function.
+Ex: var a = [5,4,3,2,1];
+smallValues = a.filter(function(x) {
+    return x < 3;
+});
+everyOther = a.filter(function(x) {
+    return i%2 == 0
+});
+
+Note that filter always skips the missing elements from an array. the result of a filter function will always be a dense array.
+so, you can use filter to remove null, undefined and non-existent elements from an array like a.filter(function(x) {return true});
+you can also close the gaps and remove undefined and null elements like this
+a.filter(function(x) {
+    return x != null && x != undefined;
+});
+
+every() and some()
+-------------------
+every() and some() methods are array predicates: they apply a predicate function you specify to the elements of the array, and then return true or false.
+every() is like mathematical forAll and some() is like mathematical forAny.
+every() function returns true if and only if all elements of the array passes the predicate given.
+some() function returns true if any one element of the array passes the predicated given.
+
+reduce() and reduceRight()
+--------------------------
+these methods apply the function you specify on elements of array to produce a single value, reducing all elements into a single element. these operations are also called as "inject"
+and "fold".
+reduce() method takes 2 arguments, where 1st argument is function and 2nd argument is the seed value.
+
+reduce() method internally is passed with 4 arguments where 2nd, 3rd and 4th values are familier value, index and array arguments but the first argument will always be the accumulated value
+so far. to handle the first iteration case, that is where the seed value comes into picture.
+
+the reduce function can be used to generate factorial value for example. refer app.js
+
+When the initial value or seed value is not mentioned, then, the first element of the array will act as seed or initial value.
+calling reduce() method on empty array with no seed value throws TypeError
+reduceRight() will function same as reduce() but from highest index to lowest index
+
+One observation is that, there is no optional second argument of an object that acts as this is present. seed value took over this place.
+
+indexOf() and lastIndexOf()
+---------------------------
+these methods searches an array for a given element and returns the index where that element is found. indexOf() gives index where search starts from the beginning of array and
+lastIndexOf() gives index where search starts from the end of the array.
+
+unlike other methods, this method will not take any function as an argument but it takes 2 arguments where 1st argument is the element to be searched for and 2nd argument is the index
+from which search should start. if the second argument is positive, search is performed from left to right and if it is negative, search is performed from right to left.
+
+example: refer app.js
+
+Array Type
+===========
+If we want to know whether an object is an array or not, use Array.isArray(<object>). this specifies whether the given object is an array or not.
+
+Array Like Objects
+==================
+we already know that JavaScript Arrays have some special features that other objects do not have
+1. the length property is automatically updated
+2. setting smaller value to length will truncate the array
+3. arrays inherit useful methods from Array.prototype
+4. Arrays have a class attribute of "Array"
+
+These features make arrays distinct from other objects in JavaScript. it is often perfectly reasonable to consider any object that has length property and corresponding non-negative integer
+properties as a kind of array.
+
+even though you cannot perform most of the operations specific to array, majority of them can be performed. 
+Since array like objects do not inherit from Array.prototype, they cannot use all array methods directly but they can be invoked directly on array like objects indirectly by using function.call
+for example:
+var a = {"0":"a", "1":"b","2":"c", length:3};
+
+Array.prototype.join.call(a, "+");
+
+Strings as Arrays
+=================
+In ECMAScript 5, Strings act as read-only arrays. Insteading of using charAt() to access individual characters in an array, you can use square brackets
+ex: String str = "sample"
+console.log(str[3]); // prints 'p'
+
+The fact that strings behave as array like have some benefits where array methods can be applied on strings indirectly using function calls.
+examples refer app.js
+
+Keep in mind that strings are immutable so when they are treated as arrays then they are read-only arrays. array methods like push, sort, splice cannot be applied on them.
+if we try to apply these methods, it will not cause any error as such but will fail silently. so use array methods on strings with caution.
