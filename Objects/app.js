@@ -84,3 +84,25 @@ function keys(o) {
     }
     return result;
 }
+
+// This object generates strictly increasing serial numbers
+var serialNum = {
+    // This data property holds the next serial number.
+    // This $ in the property name hints that it is a private property.
+    $n:0,
+
+    // Return the current value and increment it
+    get next() {
+        return this.$n++;
+    },
+
+    // Set a new value to n, but only if it is larger than the current
+    set next(value) {
+        if (value >= this.$n) {
+            this.$n = value;
+        }
+        else {
+            throw "Serial number can only be set to a larger value";
+        }
+    }
+};

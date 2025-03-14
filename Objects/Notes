@@ -198,3 +198,31 @@ In addition to for/in loop, ECMAScript 5 defines 2 more methods to enumerate pro
 1. Object.keys() : This returns an array of enumerable properties 
 2. Object.getOwnPropertyNames(): This gives all own properties including non-enumerable properties as well.
 
+Property Getters and Setters
+----------------------------
+We already know that a property of an object is a name, a value and a set of attributes. In ECMAScript 5, the value may be replaced by one or more methods, known as getter and setter.
+properties defined with getters and setters are sometimes referred to as accessor properties to distinguish them from data properties that have a simple value.
+
+When a program queries the value of an accessor property, Javascript invokes the getter method of that property access expression. In the same way, when a program sets a value to the accessor
+property, Javascript calls the setter method of that property passing the value of the assignment. this method is responsible for setting a value and the return value of this method is ignored.
+
+Accessor properties do not have a writable attribute as normal data properties have. if a property has both getter and setter methods, then it is read/write. if any one only is present, then,
+if getter, it is read-only, if setter, it is write-only.
+
+The easiest way to define accessor properties is with an extension to the object literal syntax
+
+ex:
+  var o = {
+    // An ordinary data property
+    data_prop: value,
+
+    //An Accessor property defined as a pair of functions
+    get accessor_prop {/** Function body goes here*/},
+    set accessor_prop(value) {/** Function Body goes here*/}
+  };
+
+  If we observe here, the setter and getter properties are not separated with : but methods are separated with ,. When accessing data properties from inside this getters and setters, we need to use this keyword. Since setters and getters are invoked as methods on the object, this object is referenced by this keyword and this is the reason, other data properties of the object are made available to these methods.
+
+  also, these accessor methods can be inherited by the sub classes. the other use of using the getters and setters is that these methods can be used to perform sanity checking on when we try to set the values for the data properties and when we try to read the same.
+
+  The example of using getters and setters to perform sanity checking is shown in app.js with the definition of a variable serial Number. In this variable, we are defining a function with getters and setters so that sanity check will be performed before returning the serial number. Please refer the same for understanding.
