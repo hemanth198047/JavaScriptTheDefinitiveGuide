@@ -1,3 +1,19 @@
 An Array is an ordered collection of values. each value is called an Element. Each element has a numeric position in the array and that numeric position is called index.
 
+Javascript arrays are untyped. this means, we can put any type of value in an array. an array can contain a number, string, boolean, another Array and Objects. Allowing the elements
+in this manner helps us to construct more complex arrays.
+
+Arrays are zero-index based and starts from 0 and their indexes ranges to 2^32-1. Javascript arrays are dynamic in nature. This means, they grow or shrink as per the need and there is no
+need to declare a fixed size array when you create it. Javascript arrays may be sparse which means elements in an array need not be in contiguous indexes and there may be gaps.
+
+every array will have a length property where for non-sparse elements, this gives total elements in an array and for sparse arrays, this is greater than all the elements in an array.
+
+Arrays are little bit more specialized forms of objects and indexes are really little bit more than property names that happens to be integers. arrays are normally optimized so that retrival
+of elements using indexes is bit more performant than retrieving elements by their property names.
+
+Arrays inherit their properties from Array.prototype which defines a rich set of array manipulation methods. Most of these methods are generic in nature which means they works not only for
+pure arrays but also works for objects that are array like objects.
+
+Creating Arrays
+===============
 
