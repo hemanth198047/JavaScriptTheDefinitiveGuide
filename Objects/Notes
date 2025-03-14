@@ -313,3 +313,81 @@ copying the attributes of each of the properties. Now, with the knowledge of pro
 accessor properties. In this case, instead of defining it as a function, we define it as a new object method and is then added as non-enumerable property to Obejct.prototype. Please refer
 app.js for the details how we are doing it.
 
+Object Attributes
+=================
+Every object is associated with below 3 attributes
+1. prototype
+2. class
+3. extensible
+
+We will discuss about each of these attributes, what are they, how they can be queried and how they can be set
+
+The Prototype Attribute
+-----------------------
+An Object's prototype attribute specifies an object from which that object inherits properties.
+It is important to understand that, if a prototype appears in code font, it refers to an ordinary object property but not the prototype attribute.
+
+Normally, the prototype attribute will be set when an object is created. Recall that, when an Object is created from a literal, Object.prototype becomes prototype of newly created Object.
+If Object is created using new keyword and constructor function, then prototype of the constructor becomes prototype of the newly created object
+If Object is created using the Object.create() method, then, prototype passed as argument to the create method becomes the prototype of the newly created object.
+
+In ECMAScript 5, the prototype of an object can be queried using Object.getPrototypeOf(<object>). In ECMAScript 3, there is no equivalent of this method but the prototype of an object
+can be queried using o.constructor.prototype. To check whether one object is a prototype of another object, then use o.isPrototypeOf(<object>).
+
+example:
+var p = {x:1};
+var o = Object.create(p);
+p.isPrototypeOf(o); // This determines whether p is a prototype object of o
+Object.prototype.isPrototypeOf(p); // Determines Object.prototype is prototype of Object p
+
+The Class Attribute
+--------------------
+An Object's class attribute is a string that provides information about the type of the object. Neither ECMAScript 3 nor ECMAScript 5 provides any way to set this attribute and there is
+only one indirect way of querying it.
+
+the default toString() method which is inherited from Object.prototype returns a string of the form [Object class].
+so, to obtain class of a given object, you can invoke this toString() method on the object and extract 8th to second-to-last characters of the returned string.
+The tricky part here is that many objects inherit other objects toString() methods and to invoke the correct version of toString(), we must do so indirectly, using the Function.call
+method. refer classOf() method in app.js for this technique.
+
+This classOf() function works for any JavaScript values. Numbers, Strings and booleans behave as objects when toString() method is called on them.
+function includes special cases for null and undefined. 
+Objects created through built-in constructors like Array and Date have class attribute that matches the name of their constructor
+Host Objects typically have meaningful class attributes as well, though this is implementation dependent.
+Objects created using Object literals or Object.create() will have "Object" as class attribute value.
+If you define your own constructor function, any objects you create using this constructor will have a class attribute "Object" only and there is no specific way to specify
+the class attribute for your own class objects.
+
+The Extensible Attribute
+------------------------
+The extensible attribute of an object specifies whether a new property can be added to an object or not. In ECMAScript 3, all built-in objects and user defined objects are extensible and
+the extensibility of host objects is implementation defined. In ECMASript 5, all built-in and user defined objects are extensible unless they are defined as non-extensible.
+
+ECMAScript 5 defines method to query the value of extensible attribute and also method to set the value of this attribute.
+To determine whether an object is extensible or not, pass that Object to Object.isExtensible().
+To make on object non-extensible, pass it to Object.preventExtensions(). Note that, there is no way to set the object back to extensible once it was made non-extensible.
+Also note that preventExtensions() will only effect and object on which it is applied and if new properties are added to the prototype of this object, then, those properties still pass 
+down to the extension prevented object.
+
+The purpose of the extensible attribute is to lockdown an object into a known state and prevent outside tampering. Normally, this extensible attribute is used in conjunction with the
+configurable and writable attributes of properties of an object. ECMAScript 5 provides methods to set these attributes together.
+
+Object.seal() makes an object non-extensible and non-configurable. This means, no new properties can be added and no existing properties can be deleted or configured. There is no way
+to unseal on object once it is sealed. Object.isSealed() can be used to know whether an object is sealed or not.
+
+Object.freeze() makes an object non-extensible, non-configurable and non-writable. Once the object is frozen, it can't be reverted back. Object.isFrozen() can be used to know whether
+on object is frozen or not.
+
+Note that these seal and freeze methods affects only the objects on which they are applied but not on the prototypes of those objects. if you want to seal or freeze an object throughly
+consider sealing or freezing all the prototypes of the object as well.
+
+We discussed how we can seal an object or how we can freeze an object. But why we need to do this really?
+
+Consider a scenario where we are defining a configuration object in an application where we define properties that are static in nature and remains same throughout the application.
+In this case, we want to use these properties but should not allow those properties of configuration not to be modified even accidentally during the program execution. In this case, once
+the configuration object is created, we will freeze that object so that it will not be modified during the program execution time.
+
+Consider a scenario where we are using properties of an object to represent some user data. In this scenario, we are interested to change the values of the properties that represents
+different user data in different scenarios but we are not interested in getting those properties deleted. In this case, we use Object.seal() so that properties values alone can be changed
+but they themselves can't be removed at any cost during the program execution time.
+
