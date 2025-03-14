@@ -190,8 +190,9 @@ For this purpose, we normally use for/in loop.
 for/in loop enumerates only those properties of an object whose enumerable attribute is set to true. For this reason, since some properties of built-in objects are non-enumerable, they will
 not be enumerated with for/in loop.
 
-Some utility libraries add new methods to Object.prototype so that they will be available for all the objects down the hierarchy. Prior to ECMAScript 5, there is no way to make these utility methods non-enumerable to avoid being listed in for/in loop. But with ECMAScript 5, properties can be marked as non-enumerable by setting their enumerable property to false and hence avoid
-enumerated by for/in loop.
+Some utility libraries add new methods to Object.prototype so that they will be available for all the objects down the hierarchy. Prior to ECMAScript 5, 
+there is no way to make these utility methods non-enumerable to avoid being listed in for/in loop. But with ECMAScript 5, properties can be marked as non-enumerable by setting 
+their enumerable property to false and hence avoid enumerated by for/in loop.
 
 app.js file contains some utility methods that can be used to manipulate properties of an object. Please have a look
 
@@ -222,8 +223,12 @@ ex:
     set accessor_prop(value) {/** Function Body goes here*/}
   };
 
-  If we observe here, the setter and getter properties are not separated with : but methods are separated with ,. When accessing data properties from inside this getters and setters, we need to use this keyword. Since setters and getters are invoked as methods on the object, this object is referenced by this keyword and this is the reason, other data properties of the object are made available to these methods.
+  If we observe here, the setter and getter properties are not separated with : but methods are separated with ,. When accessing data properties from inside 
+  this getters and setters, we need to use this keyword. Since setters and getters are invoked as methods on the object, this object is referenced by this 
+  keyword and this is the reason, other data properties of the object are made available to these methods.
 
-  also, these accessor methods can be inherited by the sub classes. the other use of using the getters and setters is that these methods can be used to perform sanity checking on when we try to set the values for the data properties and when we try to read the same.
+  also, these accessor methods can be inherited by the sub classes. the other use of using the getters and setters is that 
+  these methods can be used to perform sanity checking on when we try to set the values for the data properties and when we try to read the same.
 
-  The example of using getters and setters to perform sanity checking is shown in app.js with the definition of a variable serial Number. In this variable, we are defining a function with getters and setters so that sanity check will be performed before returning the serial number. Please refer the same for understanding.
+  The example of using getters and setters to perform sanity checking is shown in app.js with the definition of a variable serial Number. 
+  In this variable, we are defining a function with getters and setters so that sanity check will be performed before returning the serial number. Please refer the same for understanding.
