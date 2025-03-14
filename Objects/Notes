@@ -171,3 +171,30 @@ it is worth to remember that delete property only deletes own properties but not
 is not affected at all.
 delete does not remove properties whose configurable attribute is false. certain properties of built-in objects are not configurable, as are the properties of the global object created by
 variable declaration and function declaration.
+
+Testing Properties
+------------------
+If we want to check whether a property is present in an object or not, below methods are available
+1. check with in operator
+   ex: var o = {x:1}, "x" in o
+2. Using ownProperty() method on the object. This method is inherited from the Object. This method returns false for inherited properties.
+   ex: var o = {x:1}, o.hasOwnProperty("x")
+3. propertyIsEnumerable() method on the object. This method further refines hasOwnProperty() where it checks whether the property is own property and also it's enumerable attribute is true
+   ex: var o = {x:1}, o.isPropertyEnumerable("x")
+
+Enumerating Properties
+----------------------
+Instead of querying an object for the existence of a property, sometimes we might need to enumerate all the properties present in an object.
+For this purpose, we normally use for/in loop.
+for/in loop enumerates only those properties of an object whose enumerable attribute is set to true. For this reason, since some properties of built-in objects are non-enumerable, they will
+not be enumerated with for/in loop.
+
+Some utility libraries add new methods to Object.prototype so that they will be available for all the objects down the hierarchy. Prior to ECMAScript 5, there is no way to make these utility methods non-enumerable to avoid being listed in for/in loop. But with ECMAScript 5, properties can be marked as non-enumerable by setting their enumerable property to false and hence avoid
+enumerated by for/in loop.
+
+app.js file contains some utility methods that can be used to manipulate properties of an object. Please have a look
+
+In addition to for/in loop, ECMAScript 5 defines 2 more methods to enumerate properties. They are
+1. Object.keys() : This returns an array of enumerable properties 
+2. Object.getOwnPropertyNames(): This gives all own properties including non-enumerable properties as well.
+
