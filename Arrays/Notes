@@ -32,3 +32,106 @@ Another way to create an array is using an Array() Constructor. you can invoke t
    var a = new Array(5,4,3,2,1, "testing", "testing");
 
 
+Reading and Writing the Array Elements
+======================================
+You can access an element of an array using [] operator. a reference to the array should appear before []. an arbitrary expression that has a non-negative integer value should be inside
+the brackets. You can use this syntax to read and write values of an element of an array.
+
+the square brackets used to access elements of an array work just like square brackets used to access object properties. Javascript converts numeric array index into a string and then use
+that string as a property name. one this special about arrays is that the length property will be maintained properly on addition or deletion of an element from an array.
+
+it is important to distinguish between array indexes and property names. all indexes are property names but property names within a range of 0 to 2^32-1 are only the indexes.
+
+Note that you can use numbers that are negative or not integers at all as indexes and when this happens, javascript converts them into property names and then use them. also, if you index an
+array with a string that happens to be an integer within the allowed range, then, that will be considered as index but not as a property name. care should be taken in this case.
+
+Since arrays are specialized objects, they can inherit properties from its prototype. in ECMAScript 5, they can even have getters and setters as properties.
+
+Sparse Arrays
+=============
+A Sparse array is something in which elements are not in contiguous index positions. normally, the length property of a sparse array will be larger than the number of elements in that array.
+Sparse arrays can be created just by using Array() constructor or else assigning an element to an index much larger than the original length of the array. In this case, all the elements in
+between will become undefined. We can also make an array sparse by using the delete operator.
+
+One important point to remember about the length property of an array is that, if we assign the length of an array less than the original number of elements in an array, then, all the elements
+post that length will be deleted. In this way, we can strip an array just by changing the length of the array.
+
+it is also possible to make the length property non-writable by using the defineProperty on the array.
+
+Adding and Deleting elements from an Array
+==========================================
+we already know that we can add an element to an array by simply assigning a new value to length + 1 element. also, we can use push() method to push an element to the end of an array.
+As we use push() method to push element to the end of an array, unshift() method can be used to push the element to the top of the array.
+
+There are opposite of these activities where we can remove the element from the end of the array using pop() and remove the element from the top of the array using shift().
+
+we can remove the elements from an array using delete operator as well. ex: delete a[2] will delete 3rd element from array a. length will be auto-adjusted. if we delete an element from
+an array, then, array becomes sparse array.
+
+Finally, Splice is the general method for inserting, deleting or replacing array elements. it alters the length property and shifts the elements to higher or lower indexes as needed.
+
+Iterating Arrays
+================
+The most common way to iterate through the array elements is to use for loops
+Example:
+var o = {
+    x:1,
+    y:2,
+    z:3
+};
+var keys = Object.keys(o);
+var values = [];
+for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    values[i] = o[key];
+}
+
+output for this program, refer app.js
+
+some of the iteration techniques for arrays are defined in app.js. Please refer for further understanding
+
+A for/in loopcan return the names of inherited properties such as names of methods that have been added to Array.prototype. for this reason, you should not use for/in loop with arrays
+unless you include an additional test to filter unwanted properties.
+
+ECMAScript 5 defines a number of new methods for iterating through arrays. one such method is forEach()
+Example:
+var data = [1, 2, 3, 4, 5];
+var sumOfSquares = [];
+
+data.forEach(function(x) {
+    sumOfSquares += x*x;
+});
+
+above forEach method takes a function as an argument where each element of array is passed to it as an argument and then the body of the function will perform some operation on the element 
+that is passed.
+
+MultiDimensional Arrays
+=======================
+javaScript does not support multidimensional arrays but since arrays can contain any type of elements, putting another array as an element in one array creates multi-dimensional arrays.
+the elements from the multidimensional arrays can be retrieved by using 2 indexes one for outer array and one for inner array. like this, we can have any number of dimensions of an array.
+
+
+Array Methods
+=============
+ECMAScript 3 defines a number of useful methods for array manipulations on Array.prototype which means they are available as methods for any array.
+
+join()
+------
+Array.join() method first converts all elements of an array into strings and then concatenates them and returns the final string. we can also mention an optional delimiter with which elements
+will be joined. join will be called on the array and delimiter is provided as an argument to join method.
+
+reverse()
+---------
+this reverses the order of elements in an array and returns the reversed array.
+
+sort()
+------
+this sorts the array inplace and returns the sorted array. we can also provide a comparision function as an argument to sort() method and that comparision function will be used to perform
+the comparision of elements during the sorting process.
+
+example:
+var a = [33, 4, 1111, 222];
+a.sort();
+a.sort(function(a,b) {
+    return a-b;
+});
