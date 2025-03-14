@@ -16,4 +16,19 @@ pure arrays but also works for objects that are array like objects.
 
 Creating Arrays
 ===============
+The easiest way to create an array is to use Array Literal which is simply a comma separated list of elements enclosed in square brackets. 
+example: var a = [1,2,3,4];
+
+the elements of an array need not be always constants but they can be expressions as well. array literals can contain object literals or other array literals.
+if you omit an element from an array, that element will be given a value of undefined.
+array literal syntax allows an optional trailing comma. 
+
+Another way to create an array is using an Array() Constructor. you can invoke this constructor in 3 distinct ways
+1. call it with no arguments
+   var a = new Array()
+2. call it with a single numeric argument, which specifies its length
+   var a = new Array(10)
+3. explicitly specify two or more array elements or a single non-numeric element for the array
+   var a = new Array(5,4,3,2,1, "testing", "testing");
+
 
