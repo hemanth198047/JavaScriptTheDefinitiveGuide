@@ -106,3 +106,27 @@ var serialNum = {
         }
     }
 };
+
+// Start with an empty object
+var o = {};
+// Add a non-enumerable property with data value 1
+Object.defineProperty(o, "x", {
+    value:1,
+    writable:true,
+    enumerable:false,
+    configurable:true
+});
+
+// Check that the property is there but non enumerable
+console.log(" Property newly added: " + Object.getOwnPropertyNames(o));
+console.log("Properties of object o: " + Object.keys(o))
+
+// Modify the writable property now
+Object.defineProperty(o, "x", {writable:false});
+
+// Try to change the value of the property.
+o.x = 2;
+console.log("Writable is made false so x value not changed: " + o.x);
+
+Object.defineProperty(o, "x", {value:2});
+console.log("Since it is still configurable, value is changed: " + o.x);

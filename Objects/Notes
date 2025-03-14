@@ -232,3 +232,53 @@ ex:
 
   The example of using getters and setters to perform sanity checking is shown in app.js with the definition of a variable serial Number. 
   In this variable, we are defining a function with getters and setters so that sanity check will be performed before returning the serial number. Please refer the same for understanding.
+
+  Till now we discussed about creating getters and setters as part of new Object Creation. Next we will see how we can add these to an existing object as well.
+
+  Property Attributes
+  -------------------
+  In addition to name and value, each property is associated with 3 attributes. Writable, enumerable and configurable. In ECMAScript 3, these properties are by default writable, enumarable,
+  and configurable for each property and there is no way to control them. But from ECMAScript 5, we can control these properties.
+
+  These attributes are particularly important for library authors because
+  1. it allows them to add methods to prototype objects and make them non-enumerable like built-in methods
+  2. it allows them to lock down the objects defining properties that cannot be changed or deleted.
+
+  To clearly understand these things, lets consider the data property also as one of the attributes of a property. In this case, each property can have a name and 4 attributes listed below
+  1. data/value
+  2. Writable
+  3. Enumerable
+  4. Configurable
+
+In case of accessor properties, there will be no value and writable properties. Instead we have get, set. So, in this case also, for accessor properties there are 4 attributes
+1. set
+2. get
+3. Enumerable
+4. Configurable
+
+ECMAScript 5 methods for querying and setting the attributes of a property use an object called Property Descriptor to represent the set of 4 attributes.
+A Property Descriptor object has properties with the same names as the attributes of a property. Thus it will have properties with names value, writable, enumerable and configurable.
+similarly a property descriptor object for a accessor property will have properties with names get, set, enumerable and configurable.
+
+the value property holds value of an expression, writable, enumerable and configurable are boolean values, set and get methods are functions.
+
+to obtain the property descriptor for a named property of a specified object, call Object.getOwnPropertyDescriptor() with object as the first parameter and the property as the second parameter.
+
+ex: Object.getOwnPropertyDescriptor({x:1}, "x");
+
+in this example, we are getting the property descriptor for the property x present in object {x:1}
+
+To set a attribute for a property or to create a new property with the specified attributes, then, call Object.defineProperty() method, passing the object to be modified, name of the property to which attributes needs to be set and the property descriptor.
+
+Example: refer app.js
+After adding the property x and printing the properties of the object, below is the output
+ Property newly added: x
+Properties of object o: 
+
+This indicates that property x is added to the object but when we print the properties of the object using Object.keys(), we dont see this property. this is because, property x is not
+enumerable.
+
+Now, we switched the writable property to false and then try to set the value of x in which case, it is not changed and fails silently.
+Since the property is still configurable, we can change the value of the property using the property descriptor
+
+
