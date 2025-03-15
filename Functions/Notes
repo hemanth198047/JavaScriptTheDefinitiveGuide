@@ -84,4 +84,46 @@ for function invocation in ECMAScript 3 and non-strict ECMAScript 5, the invocat
 
 Functions written to be invoked as functions do not typically use the this keyword at all. this fact can be used to identify whether we are using strict mode or not. refer app.js for reference.
 
+Method Invocation
+=================
+A method is nothing but a function that is stored as a value for a property in an object. If you have a function f and an object o, you can define a method named m of o with the following line
+o.m = f;
+
+Having defined a method m() of the object o, invoke it like this
+o.m();
+
+if the method expects any arguments, you can pass the arguments to o.m() as well.
+
+the code above is an invocation expression which has a function expression and 2 arguments for it. here the function expression itself is a property access expression and this means that
+the function is invoked as a method rather than a regular function.
+
+method invocation expressions acts exactly same as regular expressions. Only difference is that, in method invocation, the object on which the method is invoked becomes the invocation context
+of the function where that object is referred to with "this" inside the method invocation.
+
+example:
+   var calculator = {
+    operand1:1,
+    operand2:1,
+    add: function() {
+        this.result = this.operand1 + this.operand2;
+    }
+   };
+
+   calculator.add();
+   calculator.result;
+
+   most method invocations use dot notation to access the property, but property access expressions that use square brackets also cause method invocation.
+   ex: o.m(x, y) can also be written as o["m"](x,y)
+
+   method invocations may also involve more complex property access expressions.
+   ex: customer.surname.toUppercase(); f().m();
+
+   methods and this keyword are central to object oriented programming. Any function that is used as a method is implicitly passed an argument -- the object through which it is invoked.
+   typically, a method performs some sort of operation on that object, and the method invocation expression syntax is an elegant way to express the fact that a function is operating on
+   an object. compare the following 2 lines
+   
+   rect.setSize(width, height);
+   setRectSize(rect, width, height);
+
+   
 
