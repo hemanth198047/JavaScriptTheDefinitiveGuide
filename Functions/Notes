@@ -1,0 +1,15 @@
+A function is a block of code that is defined once but may be executed or invoked any number of times. 
+Javascrpt functions are parameterized -- a function definition may include a list of identifiers, known as parameters that acts as local variables for the body of the function.
+Function invocations provides values or arguments for the function's parameters.
+Functions often use the values of their arguments to compute the return value that becomes the value of the function invocation expressions. 
+In addition to arguments, each invocation has another value -- Invocation Context -- That is the value of this keyword.
+
+If a function is assigned to a property of an object, then that function is called method of that object. 
+If a function is invoked on or through an object, that object becomes the invocation context or this of that function
+Functions designed to initialize a newly created object are called Constructors.
+
+In Javascript, functions are objects and they can be manipulated by programs and they are treated as simple variables. Since they are treated as simple variables, they can be passed
+as arguments to another functions. Since Functions are objects, you can set properties on them and then invoke methods on them as well.
+
+functions can be nested within another functions and they have access to variables that are in scope where the functions are defined. this means, javascript functions are closures.
+
