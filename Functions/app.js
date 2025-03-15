@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * Defining javascript functions
  */
@@ -60,3 +62,9 @@ var tensquared = (function(x) {
     return x*x;
 })(10);
 
+// Function that identifies whether we are using strict mode or not
+var strict = (function() {
+    return !this;
+})();
+
+console.log(strict);

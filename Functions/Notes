@@ -67,4 +67,21 @@ the javascript code that forms a function body will not be executed when it is d
 3. As Constructors
 4. As indirectly through call and apply methods
 
+Function Invocation
+===================
+Functions are invoked as functions or methods with an invocation expression.
+An invocation expression consists of a function expression which is evaluated to a function object, followed by a open paranthesis and zero or more expressions evalauted to parameters and
+followed by a closing paranthesis. if the function expression is a property access expression, which means, if the function is a property value of an object or an element in an array
+then it is called method invocation expression. 
+
+In an invocation, each argument expression is evaluated and the resulting value becomes the arguments to the function. these values are assigned to the parameter names defined in function.
+inside function body, a reference to parameter names evaluates to the corresponding argument value.
+
+for regular functions, the return value becomes value of the function invocation expression. if the function reaches to end after executing all statements inside the function, then, return
+value becomes undefined.
+
+for function invocation in ECMAScript 3 and non-strict ECMAScript 5, the invocation context (the this) is the global object. However, in strict mode it is undefined.
+
+Functions written to be invoked as functions do not typically use the this keyword at all. this fact can be used to identify whether we are using strict mode or not. refer app.js for reference.
+
 
