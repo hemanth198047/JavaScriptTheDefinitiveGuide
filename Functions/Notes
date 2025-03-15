@@ -22,4 +22,49 @@ starts with function keyword followed by these components
 2. A pair of paranthesis around zero or more identifiers called parameters. These parameters acts as local variables inside the body of the function
 3. A pair of curly braces with zero or more java script statements inside it. These statements are body of the function and are executed whenever the function is invoked.
 
-a function defined as an expression can be used only in the context of other larger expressions. examples are in app.js
+a function defined as an expression can be used only in the context of other larger expressions. examples are in app.js.
+
+Note that function names are optional while defining a function definition expression. a function declaration statement actually defines a function object and then assign that object to a
+variable where as in function definition expression, it is not assigned to any variable but is used directly. 
+
+Normally a function definition expression does not include any name. But in case if there is one name given to function definition expression, then, the local function scope for that function
+will include the binding of the function name to that function object. In effect, the function name becomes the local variable within that function body. 
+
+Any legal javascript identifier can be a function name. 
+
+One important point to note is that all the function declaration statements are hoisted to the top of the enclosing script or the enclosing function so that functions declared in this way
+can be invoked even before they are defined. But this is not true for function definition expressions. However, the variable declarations alone are hoisted but not their assignments. Hence,
+if a function declared, we can't just invoke it until it is assigned with some value.
+
+A function return statement causes the function to stop executing and return the value of its expression to the caller. if the return statement does not have an associated expression, it
+returns undefined value. 
+
+Functions with no return values are sometimes called as procedures.
+
+Nested Functions
+================
+In javascript, functions can be nested within other functions.
+example:
+  function hypotenuse(a, b) {
+    function square(x) {
+        return x*x;
+    }
+    return Math.sqrt(square(a0 + square(b)));
+  }
+
+  The interesting thing about nested function is their variable scoping rules. they can access the variables and parameters of the function they are nested within.
+  in the code above, the function square can access the parameters a and b.
+
+  In Javascript, function declaration statements are not true statements and ECMAScript specification allows them only as top level statements. this means function declaration statements
+  can appear in global code, within other functions but they can't appear inside of loops, conditionals, or try/catch/finally or with statements. This restriction only applies when functions
+  are defined as statements only. Function definition expressions can appear anywhere inside the javascript.
+
+Invoking Functions
+==================
+the javascript code that forms a function body will not be executed when it is defined but will be executed when the function is invoked. javascript functions can be invoked in 4 ways
+1. As functions
+2. As Methods
+3. As Constructors
+4. As indirectly through call and apply methods
+
+
