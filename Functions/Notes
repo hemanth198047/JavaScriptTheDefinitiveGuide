@@ -13,3 +13,13 @@ as arguments to another functions. Since Functions are objects, you can set prop
 
 functions can be nested within another functions and they have access to variables that are in scope where the functions are defined. this means, javascript functions are closures.
 
+Defining Functions
+==================
+Functions are defined using the function keyword, which can be used in function definition expression or in function declaration statement. in both the cases, function definition
+starts with function keyword followed by these components
+1. an identifier that names the function. the name part is required in function declaration statement where the function object is created and assigned to the variable with the name same
+   as defined as function name. For function definition expression, name is optional and if present, will be used only inside the function body
+2. A pair of paranthesis around zero or more identifiers called parameters. These parameters acts as local variables inside the body of the function
+3. A pair of curly braces with zero or more java script statements inside it. These statements are body of the function and are executed whenever the function is invoked.
+
+a function defined as an expression can be used only in the context of other larger expressions. examples are in app.js
