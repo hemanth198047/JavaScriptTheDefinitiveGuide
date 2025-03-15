@@ -125,5 +125,40 @@ example:
    rect.setSize(width, height);
    setRectSize(rect, width, height);
 
-   
+   from the above two lines, we can see that both are performing the same operation but the method call on rect object is more clear than the latter one.
+
+   When a method returns an object, you can use that return value to invoke some other methods on the returned object. this is called method chaining and this type 
+   of method chaining is observed more in JQuery.
+
+Please remember that method chaining is completely different from constructor chaining.
+
+unlike variables, this keyword does not have any scope and nested functions do not inherit this value of their caller. If a nested function is invoked on a method, then that object
+becomes this value inside that function. It is a common mistake to assume that when a nested function is invoked as a function, then, its this value is either a global object or
+undefined but not the this object of the outer function.
+
+When a nested function is invoked as a function, then, we can't use its this property to retrieve the invocation context of the outer function. so, in this case, if you want the invocation
+context of the outer function, you need to specifically store that in a separate variable and using that variable you can get the invocation context of the outer function.
+
+example:
+
+var o = {
+    m: function() {
+        var self = this;
+        console.log(this === o);
+        f();
+    }
+
+    function f() {
+        console.log(this === o);
+        console.log(self === o);
+    }
+};
+o.m();
+
+refer app.js for execution of the above code.
+
+Constructor Invocation
+======================
+If a function or method invocation is preceeded by new keyword, then it is a constructor invocation. These constructor function invocations differ from the regular function invocations
+in the terms of handling arguments, invocation context and return values.
 
