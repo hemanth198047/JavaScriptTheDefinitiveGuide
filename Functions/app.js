@@ -81,4 +81,40 @@ var o = {
         }
     }
 };
-o.m();
+//o.m();
+
+/**
+ * Example for optional parameters
+ */
+// Append the names of the enumerable properties of object o to an array a and return a. if a is omitted return a new array
+function getPropertyNames(o, /** Optional */ a) {
+    //if (a === undefined) a = []; // If undefined use new array
+    a = a || [];
+    for (var prop in o) {
+        a.push(prop);
+    }
+    return a;
+}
+var x = {a:1,b:2,c:3};
+var a = getPropertyNames(x);
+var p = [];
+p = getPropertyNames(p, a);
+//console.log("A:" + a)
+//console.log("P:" + p)
+
+/**
+ * Function that accepts any number of arguments and then return the maximum of the passed arguments
+ */
+function max(/** ... */) {
+    var max = Number.NEGATIVE_INFINITY;
+    // Loop through the arguments, looking for and remembering the biggest
+    for (var i = 0; i < arguments.length; i++) {
+        if (arguments[i] > max) {
+            max = arguments[i];
+        }
+    }
+    return max;
+}
+
+var largest = max(1, 10, 100, 2, 3, 1000, 4, 5, 10000, 6);
+console.log(largest);

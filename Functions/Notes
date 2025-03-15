@@ -162,3 +162,57 @@ Constructor Invocation
 If a function or method invocation is preceeded by new keyword, then it is a constructor invocation. These constructor function invocations differ from the regular function invocations
 in the terms of handling arguments, invocation context and return values.
 
+In constructor functions, if there are arguments to be passed, then, they are handled as regular functions itself. But if there are no arguments, then, there is no need specify the 
+parantheis itself. 
+example: var v = new Object() and var v = new Object  both are same only.
+
+a constructor invocation creates a new empty object that inherits from prototype property of the constructor. Constructor functions are intended to initialize objects and this new object
+is used as the invocation context so the constructor function can refer to it with this keyword. Note that the new object is used as the invocation context even if the constructor function
+call looks like method invocation. Example: In case of new o.m(), o is not the invocation context of new object but prototype of the constructor is the invocation context.
+
+Constructor functions do not normally use the return keyword. they typically initialize new object and then return implicitly when they reach the end of the body. in this case new object
+is the return value of constructor function expression. in case if constructor function returns any specific value, then that value becomes the value of the invocation expression. If the 
+constructor function returns no value or returns a primitive value then that will be ignored and the new object is used as the value of the invocation expression.
+
+Indirect Invocation
+===================
+Javascript functions are objects and like all other objects, they have methods. Two of these methods are call() and apply(). they are used to invoke a function indirectly. Both of these methods allow you to explicitly specify this object as invocation context. This means, you can invoke any function as a method of any object, even if it is not actually the method of that
+object. Both methods also allows you to specify the arguments of the functions that is being invoked. The call() method uses its own argument list as arguments to the function and
+apply() method expects an array of values to be used as arguments.
+
+Function arguments and Parameters
+=================================
+Javascript functions do not specify expected type for their parameters and function invocations do not perform any type checking on their parameters. In fact, javascript do not even
+check the number of arguments passed to a function. Following sections describe what happens when fewer arguments are passed to a function than expected and what happens when more
+arguments are passed to a function than expected.
+
+Optional Parameters
+-------------------
+when a function is invoked with fewer parameters than the declared parameters, the additiona parameters are set to undefined. For example refer app.js
+
+Note that if we are using the optional arguments, then, they should go as the last aruments in the function call.
+
+Variable length arguments Lists: The Arguments Object
+-----------------------------------------------------
+When more number of arguments are passed to a function than the defined parameters, then, there is no way to refer to those extra arguments. Arguments object is the solution for this problem.
+Arguments belongs to the local scope of a function. It is an array like object that holds all the arguments passed to the function and those arguments can be accessed using the index
+rather than the argument name.
+
+The Arguments is an array like object and hence it contains a length property. based on this property, we can access the arguments that are passed to a function based on their position.
+This Arguments object can be used to perform certain sanity checks like whether a function is called with the expected arguments or not.
+This is normally not required because default behavior of javascript is that missing arguments are replaced with undefined and extra arguments are ignored.
+
+One important use of Arguments object is that it can be used to write the functions that can operate on any number of arguments. for example of such type of function refer app.js
+Functions like this that accepts any number of arguments are called variadic functions or variable arity functions or varargs functions. 
+
+Note that varargs functions need not allow zero arguments. it is perfectly reasonable to use the arguments[] object to write functions that expect some fixed number of named and required
+arguments followed by an arbitrary number of unnamed optional arguments.
+
+The Arguments object has some unusual feature. In non-strict mode, when a function has named parameters, the array elements of argument object are aliases for parameters that holds 
+the arguments. the numbered element of argument object and the parameter names are like two different names for the same value. changing the value of an argument in one form will affect
+the retrieval of the same element using another form. 
+
+this special behavior of arguments is removed in ECMAScript 5. In strict mode Arguments is a reserved word but in nonstrict mode it is merely an identifier. 
+
+The Callee and the Caller properties
+-----------------------------------
