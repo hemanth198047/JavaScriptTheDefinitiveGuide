@@ -263,3 +263,60 @@ In this example, first element represents a function and the value passed to thi
 Please refer app.js for examples of using functions as data.
 
 
+Defining your own function properties
+=====================================
+A function is a specialized object in javascript and it can have its own properties.
+Suppose we need a static property that holds data across the invocations a function, then, it is better to define that property as a function property.
+By defining function properties, we can avoid cluttering the global namespace.
+
+Example:
+// Initialize counter property in a function. since function declarations are hoisted, we can declare a function property before even the function is defined
+uniqueInteger.counter = 0;
+
+// Now define the function. This function returns a different integer each time it is invoked.
+// It uses a property of itself to remember the next value to be returned.
+function uniqueInteger() {
+    return uniqueInteger.counter++;
+}
+
+As another example, consider the following factorial() function that uses properties of itself(treating itself as an array) to cache previously computed results.
+function factorial(n) {
+    if (isFinite(n) && n>0 && n=Math.round(n)) { // Finite, positive ints only
+        if (!n in factorial) { // If no cached result
+            factorial[n] = n * factorial[n-1];
+        }
+        return factorial[n];
+    }
+    else {
+        return NaN;
+    }
+}
+
+factorial[1] = 1;
+
+Refer app.js for working example
+
+Functions as Namespaces
+=======================
+We already know that each and every function has a function scope. variables declared inside a function is visible throughout the function. variables declared outside a function is a global
+variable and is visible throughout the javascript program. In order to avoid polluting the global namespaces, we use functions itself as namespaces where variables defined inside a function
+is visible through out the function and not visible outside the function.
+
+In order to implement this feature, we define a function as an anonymous function and invoke it immediately.
+Suppose, for example, you have a module of javascript code that you want to use in a number of different javascript programs. Assume, like normal code, this code block defines a number
+of variables to store intermediate results of the computation. the problem is that, since this module is used in many different javascript programs, We don't know whether the variables 
+defined inside this module will conflict with the variables defined in another programs. The solution for this is that put the code in a function and then invoke that function. This way
+variables would be local to that function only and will not spoil the global namespace.
+
+example:
+  function mymodule() {};
+  mymodule();
+
+this above code defines a single global variable called mymodule. if we don't want even this single global variable, then, we can create an anonymous function and invoke it immediately as below
+
+(function(){}());
+
+Example of this is in app.js
+
+Closures
+========

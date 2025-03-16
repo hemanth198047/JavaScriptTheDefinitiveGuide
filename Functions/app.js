@@ -187,3 +187,59 @@ var j = operate2("add", "hello", operate2("add", " ", "world"));
 var k = operate2("pow", 10, 2);
 //console.log(j + "\n" + k);
 
+function factorial(n) {
+    if (isFinite(n) && n>0 && n == Math.round(n)) {
+        if (!(n in factorial)) {
+            factorial[n] = n * factorial(n-1);
+        }
+        return factorial[n];
+    }
+    else {
+        return NaN;
+    }
+}
+
+factorial[1] = 1;
+
+//console.log(factorial(5));
+
+// Define an extend function that copies the properties of its second and subsequent arguments onto its first argument.
+// We workaround a bug in IE here: in many versions of IE,  the for/in loop won't enumerate an enumerable property of o if the prototype of o
+// doesn't have an enumerable property with the same name. This means that properties like toString() are not handled correctly unless we explicitly check for them
+
+var extend = (function() { // Assign the return value of this function
+    // First check for the rpesence of bug before patching it
+    for (var p in {toString:null}) {
+        // If we get here, then the for/in loop works correctly and we return a simple version of extend() function
+        return function extend(o) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var prop in source) {
+                    o[prop] = source[prop];
+                }
+            }
+            return o;
+        };
+    }
+
+    // If we get here, it means that the for/in loop didn't enumerate the toString property of the test object. so, return a version of extend() function
+    // that explicitly tests for the non-enumerable properties of Object.prototype
+
+    return function patched_extend(o) {
+        for (var i = 1; arguments.length; i++) {
+            var source = arguments[i];
+            // Copy all the enumerable properties
+            for (var prop in source) o[prop] = source[prop];
+
+            // And now check for the special properties
+            for (var j = 0; j < protoprops.length; j++) {
+                prop = protoprops[j];
+                if (source.hasOwnProperty(prop)) o[prop] = source[prop];
+            }
+        }
+        return o;
+    };
+
+    // This is the list of special-case properties we check for
+    var protoprops = ["toString", "valueOf", "constructor", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "toLocaleString"];
+}());
