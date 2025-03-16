@@ -243,3 +243,50 @@ var extend = (function() { // Assign the return value of this function
     // This is the list of special-case properties we check for
     var protoprops = ["toString", "valueOf", "constructor", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "toLocaleString"];
 }());
+
+var scope = "global scope";
+  function checkscope() {
+    var scope = "local scope";
+    function f() {
+        return scope;
+    }
+    return f;
+  }
+
+  //console.log(checkscope()());
+
+  function counter(n) { // n itself acts as a private variable now
+    return {
+        get count() {
+            return n++;
+        },
+        set count(val) {
+            if (val < n) {
+                throw TypeError();
+            }
+            n = val;
+        }
+    };
+  }
+
+  /*var c = counter(1000);
+  console.log(c.count);
+  console.log(c.count);
+  c.count = 2000;
+  console.log(c.count);
+  console.log(c.count);
+  c.count = 2000;
+  console.log(c.count); */
+
+  /**
+   * Function that replaces a method named m in an object o with a new method that prints logs before and after calling the method
+   */
+function trace(o, m) {
+    var original = o[m];
+    o[m] = function() {
+        console.log(new Date(), "Entering: ", m);
+        var result = original.apply(o, arguments);
+        console.log(new Date(), "Exiting: ", m);
+    };
+}
+

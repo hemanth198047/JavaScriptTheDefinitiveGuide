@@ -320,3 +320,188 @@ Example of this is in app.js
 
 Closures
 ========
+Like most programming languages, javascript uses lexical scoping.
+What is lexical scoping?
+Lexical scoping is a concept in programming language where an environment or context os determined by where the code is written, rather than where it is executed.
+For example, imagine you have a few boxes (functions) and inside each box, you can put some variables. when you open a box, you can see what is inside the box. if you open a box within a box
+you can also what is in the outer box.
+so, lexical scoping means that a function can "see" and use variables from its own box and any outer box it's inside of, but it cannot access things from a box that is inside of it.
+
+So, Lexical scoping is a rule that says "Where the code is written (it's location in the code) determines which variables the function can access"
+
+In order to achieve the effect of lexical scoping, the internal state of the javascript function object must include not only the code of the function but also the reference to the current
+scope chain.
+
+In Javascript, the scope chain refers to a series of nested environments in which a particular piece of code will get executed. it's essentially a chain of variable lookups, where javascript
+will search for the variables in the current scope, and if not found, it will lookup to outer scopes until it reaches the global scope.
+
+1. Local Scope: when a variable is defined inside a function, that variable is part of the local scope
+2. Outer Scope: if the variable is not found in the local scope, javascript will look for it in the outer scope.
+3. Global Scope: if the variable is not found in any of the local scopes, Javascript will eventually searches the global scope.
+
+the scope chain is the mechanism that javascript uses to resolve the variables. everytime a function is called, a new execution context is created, and within that context, there's a 
+scope chain that consists of
+1. the local scope (function's own variables)
+2. the scope of the enclosing function (if the function is nested)
+3. the global scope
+
+javascript uses lexical scoping, meaning, the scope of the variables is determined by the location where the variables are defined but not where the function is called.
+Execution Context: Every time a function is called, a new execution context is created which includes the scope chain of that function
+
+This combination of the function object and the scope (a set of variable bindings) in which the function's variables are resolved is called a closure. 
+
+Technically, all javascript functions are closures. they are objects, and they have a scope chain associated with them.
+
+Most functions are invoked using the same scope chain that was in effect when the function is defined and it doesn't really matter that there is a closure involved.
+
+Closures becomes interesting only when they are invoked in some different scope chain than the one that was in effect when they are defined. This happens mostly in the cases where a nested
+function is returned as the value of the invocation expression. In order to understand closures well, we first need to understand the lexical scope rules for nested functions.
+
+Ex:
+  var scope = "global scope";
+  function checkscope() {
+    var scope = "local scope";
+    function f() {
+        return scope;
+    }
+    return f();
+  }
+
+  checkscope();
+
+  Above code just returns "local scope" since the checkscope() defined a function f() and it was invoked internally itself. Since local scope available in that context, "local scope" string
+  is returned. Now we make a small change to above program
+
+  var scope = "global scope";
+  function checkscope() {
+    var scope = "local scope";
+    function f() {
+        return scope;
+    }
+    return f;
+  }
+
+  checkscope()();
+
+  In this example, we are returning the inner function and this inner function then is invoked later. By the time, when we execute this line, the inner function already came out and should
+  not be available any more. But in this case, the second line also gives "local scope" as output. this is because, the inner function is returned and this inner function execution context
+  still holds reference to the outer function scope chain. Hence, the scope variable of outer function is still available in the outer function context and will be used.
+
+  This concept is called closure.
+
+  closures capture the local variable (and parameter)  bindings of the outer function within which they are defined.
+  Each time a javascript function is invoked, a new object is created to hold the local variables for that invocation, and that object is added to the scope chain. When the function returns,
+  that variable binding object is removed from the scope chain. If there were no nested functions, then, there will be no reference to the binding object and it gets garbage collected.
+  If there were nested functions defined, then each of those functions will have a reference to the scope chain, and that scope chain refers to the variable binding object.
+
+  If the nested function remained inside the outer function itself and is not returned, then, when the outer function is completed, along with the outer function, the inner functions also
+  might got garbage collected. However, when a function defines an inner function and this inner function is stored somewhere out to the outer function, then, there will be an external
+  reference to the inner function.
+
+  Earlier we discussed about creating the unique integers where a property of a function can be used to store the state of the function. This is buggy in nature because anyone having access
+  to this function can alter the value of that function property. Closures come to a rescue in these scenarios where closures capture the local variables of the single invocation function 
+  and can use those variables as a private state.
+
+  If we re-write the uniqueNumber generator as shown below
+  
+  var uniqueInteger = (function(){
+    var counter = 0;
+    return function () {
+        return counter++;
+    }
+  }());
+
+  If we observe this code, initially we think this line of code is assigning a function to a variable. But originally, we are creating an anonymous function and invoking that function on the
+  spot. this function internally is holding a function property and there is another function defined inside this function and that function is returned which then will be invoked.
+  This inner function inturn returns the incremented counter.
+
+  From this code, we can understand that the counter variable is visible only within the inner function and is not visible anywhere outside the outer function. This provides the private 
+  nature of the variable which cannot be accessed by any one else except the inner function. This is the advantage of using the closures.
+
+  private variables like counter need not be exclusive to a single closure: it is perfectly possible for 2 or more nested functions to be defined within the same outer function and share the
+  same scope chain.
+  Ex:
+    function counter() {
+        var n=0;
+        return {
+            count: function () {return n++},
+            reset: function() {n = 0;}
+        };
+    }
+
+In this function, n is defined in the outer function counter(). The inner closure functions count and reset have access to n and both of them can access this variable and manipulate.
+
+Trying to understand above code, the counter() function returns a counter object. counter object defines 2 methods count and reset that acts on private variable of the counter.
+On each invocation of counter function, a new scope chain is created and each has it's own private counter. so manipulating private variable on one counter will not affect the private variable
+of the other counter object.
+
+It is worth to note that this closure technique can be combined with getters and setters. 
+Example:
+    function counter(n) { // Here n itself acts as a private variable
+        get count() {return n++;},
+        set count(val) {
+            if (n > val) {
+                throw TypeError();
+            }
+            n = val;
+        }
+    }
+
+    var c = counter(1000); // Counter function object holds the value 1000 as its private state now
+    c.count gives 1000 as value
+    again call c.count. Now this returns 1001 since 1000 is already holded by counter function object and this value then will be incremented and returned
+    c.count = 2000; This overrides the value of private variable inside counter function object with a value of 2000 since it is more than the current value of 1001
+    c.count now gives 2000
+    c.count = 2000; this throws an error because now this value is not greater than the inner state of the counter function object.
+
+    refer app.js for execution details
+
+The method explained above also gives us a chance to mention the initial value for the private variable.
+
+It is important to note that the scope chain associated with a closure is "live". 
+Another thing to remember while ariting a closure is "this" is a keyword but not a variable. Also every function will have a this value associated with the function object. this "this"
+value is not available for the closures until unless this value is stored in some variable inside the outer function.
+
+The same rule applies in case of arguments also. Each function invocation will have an arguments object associated with it. Since inner functions also will have their own arguments object
+they can't access the arguments object of the outer function. Here also, if we save the arguments object of the outer function in some variable, then, this variable can be accessible by
+the inner function there by accessing arguments object of the outer function.
+
+Functions Properties, methods and Constructors
+==============================================
+Functions are values in javascript. the typeof operator returns the string "function" when applied to a function, but functions are really a specialized form of an object.
+Since Functions are specialized object, they can have methods and properties.
+There is even a Function Constructor that can be used to create a new function. 
+
+The length property
+-------------------
+Within the body of a function, arguments.length specifies the number of arguments passed to the function. apart from this, the function object itself contains a length property which
+will give the arity of the function which refers to the number of parameters declared in a function definition. This is usually the number of arguments a function expects.
+
+The prototype property
+----------------------
+Every function has a prototype property that refers to the prototype object of the function. every function will have a different prototype object. When a function is used as a constructor,
+the newly created object inherits properties from the prototype object.
+
+The call and apply methods
+--------------------------
+Each and every function object will contain the call and apply methods inside it. these are used to indirectly invoke a function as a method on some other object.
+
+the first argument of call or apply methods are objects on which the function needs to be called. this object becomes the invocation context of the function being invoked.
+For example: To invoke a function f() on an object o, f.call(o), f.apply(o) can be used. here f is the function that needs to be invoked and o is the object on which this function needs
+to be invoked.
+
+in ECMAScript 5, the first argument to call or apply becomes the value of this even though that first argument is a primitive or null or undefined. in ECMAScript 3, if the first argument
+is null or undefined, then that will be replaced with the global object.
+
+in case of call, any argument after the first argument becomes the arguments for the function call
+in case of apply, after first argument, the arguments to the function being invoked will be passed as the array of values.
+
+If a function is defined to accept an aribitrary number of arguments, then, apply method allows you to invoke that function on the contents of array of arbitrary length.
+note apply works both with pure arrays and array-like objects.
+
+In particular, you can invoke a function with the same arguments as the current function by passing the arguments object directly to apply(). 
+Example: refer app.js for an example
+
+The method used above where altering an existing method dynamically with a new method is called "Monkey-Patching".
+This concept is something similar to Aspects in Spring programming.
+
