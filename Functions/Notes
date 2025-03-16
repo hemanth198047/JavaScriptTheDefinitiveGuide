@@ -505,3 +505,82 @@ Example: refer app.js for an example
 The method used above where altering an existing method dynamically with a new method is called "Monkey-Patching".
 This concept is something similar to Aspects in Spring programming.
 
+The Bind Method
+===============
+
+The primary function of Bind() method is to bind a function to an object. Bind() function can also bind arguments to a function. The return value of Bind() method will be a function.
+
+Let's discuss about the bind function in more detail here
+
+Consider there is a function as shown below
+
+    function test() {
+        console.log("TEST");
+    }
+
+    test();
+
+invoking test() is going to print "TEST" String on the console. Now, lets do as below
+
+var test2 = test.bind();
+test2();
+
+Invoking test2() also prints "TEST". This is because, using the bind() method of function object, we binded test function object to test2 variable. See app.js for demo
+
+From the above code, we understand that bind method will return a function. Normally we will not use bind in this manner but this is just for understanding purpose.
+
+Bind also takes arguments and the first argument that is passed to bind() method is an object. This object is a way to bind the property "this", or associate the function with a different
+object.
+
+Example to illustrate above point is in app.js where we saw how function wrapping is applied, how binding a method to an object is done.
+
+bind() method also can be used to bind arguments to a function that is binded to an object.
+Binding arguments to a function is demonstrated in app.js. Please refer.
+
+Further explanation of bind
+---------------------------
+bind() method was introduced in ECMAScript 5 but it is easy to simulate this in ECMAScript 3 as well.
+bind() method is used to bind a function with an object. When you invoke bind() method on a function f and pass an object o, the method returns a new function. Invoking this new function
+invokes the original function f as a method of o. Any arguments you pass to the new function will be passed to the original function.
+
+Ex:
+  function f(y) { // This is the function that we need to bind
+    return this.x + y;
+  }
+
+  var o = {x:1}; // This is the object to which above function needs to be binded
+
+  var g = f.bind(o); // Here the function f is binded to o and returns a new function which is stored in g. So, we need to invoke the function g
+  g(2); // Here we are invoking the new function g with argument 2 which is passed to the original function (y) and this function is invoked as a method on object o.
+  // Since object o already has property x, this will be used in the function statement execution.
+  Refer app.js for example demo
+
+  It is easy to simulate this ECMAScript 3. Refer app.js
+
+  ECMAScript 5 bind() method does more than just binding the function to an object. It also performs partial application: any arguments passed to bind() after first argument are bound
+  along with this keyword. The example of partial application is explained in app.js. Partial Application is a common technique in functional programming and is often called as
+  "Currying".
+
+The toString() method
+---------------------
+Like all other javascript objects, functions also will have a toString() method and on running this will give the full body of the function on which toString() is invoked.
+
+The Function Constructor
+------------------------
+Apart from function declaration statement and function definition expressions, Functions can also be created using the constructor. 
+The Function constructor expects any number of arguments where the last argument is the text of the function body. all the remaining arguments becomes the arguments to the function.
+Example:
+  var f = new Function("x", "y", "return x+y;");
+  is same as
+  var f = function(x,y) {
+    return x+y;
+  }
+
+  Function constructors creates anonymous functions and they will have no name. below are the important points we need to remember about Function constructor
+  1. Function constructor allows javascript functions to be dynamically created and compiled at runtime
+  2. Function constructor parses the function body and creates a new function object each time it is called. if the call to the constructor appears in a loop, then it is inefficient
+  3. The functions that a function constructor creates does not use lexical scoping. Hence, closures will not working these function objects. instead, they are always compiled as if they 
+     are top level functions
+
+Callable Objects
+================

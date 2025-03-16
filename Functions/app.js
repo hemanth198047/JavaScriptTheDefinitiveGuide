@@ -290,3 +290,73 @@ function trace(o, m) {
     };
 }
 
+function test() {
+    console.log("TEST");
+}
+
+//test();
+var test2 = test.bind();
+//test2();
+
+/**
+ * Illustration of bind with arguments
+ */
+
+let user1 = {name:'Hemanth'};
+let user2 = {name:'Kumar', greet() {
+//    console.log(this);
+    console.log(`Hello ${this.name}`);
+}};
+
+ //user2.greet();
+ // Using function wrapper
+//setTimeout(function() {user2.greet();}, 1000);
+// Using bind mechanism
+//let greet = user2.greet.bind(user2);
+//setTimeout(greet,1000);
+
+/*user2.greet = function() {
+    console.log(`Hi ${this.name}`);
+}*/
+
+//let greet1 = user2.greet.bind(user1);
+//setTimeout(greet1, 1000);
+
+/**
+ * Demonstration of binding arguments to a function
+ */
+const greeting = function(greet, name) {
+    return `${greet} ${name}`;
+};
+//console.log(greeting('Hi', 'Hemanth'));
+// The first argument of bind should be an object that becomes "this" of the new function that is returned by bind
+const morningGreeting = greeting.bind(null, 'Good Morning'); // This is called partial application
+
+//console.log(morningGreeting('hemanth'));
+
+const morningGreetingForHemanth = greeting.bind(null, "Good Morning", "Hemanth");
+//console.log(morningGreetingForHemanth());
+
+function toBeBindedFunction(y) { // This is the function that needs to be binded
+    return this.x + y;
+}
+var o = {x:1}; // This is the object to which above function needs to be binded
+
+var g = toBeBindedFunction.bind(o); // Here we are binding the function f with the object o and this bind function returns a new function which needs to be invoked
+console.log("Value from the binded function: " + g(2)); // Here 2 is passed to the new function g which in turn passes this argument to the original function
+// original function is calling this.x and this.x is available in the object. Since the function is binded to o, this x value of o will be available for the function that is binded.
+// Hence we get the original result
+
+/**
+ * Binding a function to a object with ECMAScript 3 style
+ */
+function bind(f, o) {
+    if (f.bind) {
+        return f.bind(o);
+    }
+    else {
+        return function() {
+            f.apply(o, arguments);
+        };
+    }
+}
