@@ -584,3 +584,94 @@ Example:
 
 Callable Objects
 ================
+In case of arrays, we know that there are "array-like" objects as well. The same situation occurs for functions as well.
+There are "Callable Objects" that are function like objects.
+All functions are callable but all callable-objects are not functions.
+
+callable objects that are not functions are encountered in 2 situations in today javascript implementations.
+First, IE Web browsers implements client-side methods such as Window.alert() and Document.getElementsById() using callable host objects instead of native function objects.
+Second, RegExp objects -- In many browsers, you can invoke the RegExp object directly as a shortcut of invoking its exec() method. We should avoid using this technique as it became
+non-standard.
+
+Functional Programming
+======================
+Javascript is not a functional programming language like Lisp or Haskell, but the fact that Javascript can manipulate functions as objects means that we can use functional programming
+techniques in javascript. Array methods like map(), reduce() lend well for functional programming style.
+
+Higher Order Functions
+======================
+A High order function is a function that operates on functions, take one or more functions as arguments and returning a new function.
+Example: Refer app.js
+
+The not function mentioned in the example is a High Order Function because it takes a function as an argument and returns a function as return value.
+
+Partial() and memoize() functions are also examples of High Order Functions.
+
+Partial Applications of Functions
+=================================
+the bind() method of function f returns a new function that invokes f in a specified context and with a specified set of arguments. the bind() method partially applies the arguments
+on the left, that is, the arguments you pass to bind() are placed at the start of the arguments list that is passed to the original function. But it is also possible to apply arguments
+partially on the right.
+
+Memoization
+===========
+Earlier we discussed about functions that cached its previously computed results. This process of caching the results is called memoization.
+
+Example:
+
+function memoize(f) {
+    var cache = {}; // Value cache stored in the closure.
+    return function() {
+        // Create a string version of the arguments to use as a cache key.
+        var key = arguments.length + Array.prototype.join.call(arguments,",");
+        if (key in cache) return cache[key];
+        else return cache[key] = f.apply(this, arguments);
+    };
+}
+
+This code defines a **memoization** function, which is a technique used to optimize performance by caching the results of expensive function calls and reusing them when the same inputs occur again.
+
+Let's break down the code:
+
+1. `memoize(f)` Function:
+The `memoize` function takes another function `f` as an argument and returns a new function that wraps the original function `f`. This new function will check if the result for a given set of arguments is already cached; if it is, it will return the cached value. If not, it will compute the result, store it in the cache, and return it.
+
+2. Cache Initialization:
+
+var cache = {}; // Value cache stored in the closure.
+
+- A `cache` object is initialized. This `cache` will store the results of previously computed function calls, so if the same arguments are passed to the function again, the result can be returned directly from the cache instead of recomputing it.
+- This cache is created in the closure of the returned function, so it persists between different calls to the memoized function.
+
+3. Returned Function:
+
+return function() { ... };
+
+- `memoize(f)` returns a new function. This returned function will replace the original function `f`. This new function will be the one that handles caching and calls `f`.
+
+4. Creating a Cache Key:
+
+var key = arguments.length + Array.prototype.join.call(arguments, ",");
+
+- The `arguments` object contains the arguments passed to the function. To use these as a unique key for caching, it converts the arguments into a string representation.
+  - `arguments.length` gets the number of arguments.
+  - `Array.prototype.join.call(arguments, ",")` joins all arguments into a comma-separated string.
+- This forms a string `key` that uniquely identifies the function call based on its input arguments.
+
+5. Cache Lookup:
+
+if (key in cache) return cache[key];
+
+- The function checks if the `key` already exists in the `cache` object. If it does, it means the result has been computed before, so it returns the cached result: `cache[key]`.
+
+6. Function Execution and Caching:
+
+else return cache[key] = f.apply(this, arguments);
+
+- If the key is not found in the cache, it means the function hasn't been called with these arguments before. In this case, the original function `f` is called with the provided arguments:
+  - `f.apply(this, arguments)` invokes the function `f` with the correct `this` value and arguments.
+- The result of calling `f` is then stored in the cache with the key `key` so that it can be reused in the future.
+  
+Summary:
+The purpose of this `memoize` function is to optimize the execution of functions by caching the results of expensive function calls based on their arguments. When the same arguments are passed to the memoized function again, the cached result is returned instead of recomputing it, which improves performance, especially for expensive or repeated computations.
+

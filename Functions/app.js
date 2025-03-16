@@ -343,7 +343,7 @@ function toBeBindedFunction(y) { // This is the function that needs to be binded
 var o = {x:1}; // This is the object to which above function needs to be binded
 
 var g = toBeBindedFunction.bind(o); // Here we are binding the function f with the object o and this bind function returns a new function which needs to be invoked
-console.log("Value from the binded function: " + g(2)); // Here 2 is passed to the new function g which in turn passes this argument to the original function
+//console.log("Value from the binded function: " + g(2)); // Here 2 is passed to the new function g which in turn passes this argument to the original function
 // original function is calling this.x and this.x is available in the object. Since the function is binded to o, this x value of o will be available for the function that is binded.
 // Hence we get the original result
 
@@ -360,3 +360,23 @@ function bind(f, o) {
         };
     }
 }
+
+/**
+ * Example to demonstrate High Order Functions
+ */
+// This high order function returns a new function that passes its arguments to f and returns the logical negation of f's return value
+function not(f) {
+    return function() {
+        var result = f.apply(this, arguments);
+        return !result;
+    };
+}
+
+var even = function(x) {
+    return x%2 == 0;
+}
+
+var odd = not(even);
+console.log([1,1,3,5,5].every(odd));
+// Every function returns true if every element of the array on which every() method invoked satisfies the condition passed to the every() method.
+
