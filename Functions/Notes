@@ -216,3 +216,50 @@ this special behavior of arguments is removed in ECMAScript 5. In strict mode Ar
 
 The Callee and the Caller properties
 -----------------------------------
+In addition to it's array elements, Arguments object also defines callee and caller properties as well. In ECMAScript 5, if we try to read/write these properties, TypeError will be raised.
+Outsisde of strict mode, Callee refers to the currently running function and Caller refers to the function that called this function. The Caller property provides access to call stack
+and callee function is used to call unnamed functions by themselves recursively.
+
+Using Object properties As Arguments
+------------------------------------
+There will be situations where a function accepts more number of arguments and user might get confuse in remembering the names of those arguments. To solve this problem, we can create
+an array with arguments as name/value pairs and then pass that array as argument to the function. This array then will be mapped to Aruments object and Arguments object can then be used
+to access the arguments using their names.
+
+Example: refer app.js for Using object properties as arguments
+
+Argument Types
+--------------
+When a function declares parameters, normally on invoking a function, the arguments are not checked for any type. For that case, it will not even check how many arguments are passed to the
+function. But normally, type conversion of arguments will take place accordingly and implicitly. But this is not the case in all scenarios.
+There are chances where type conversion will fail say for example first argument of a function is expected as array and if we pass something that cannot be converted to array, then this
+function call will fail because implicit type conversion also fails.
+
+So, it is better to do the type checking on ourselves before we proceed further with using those arguments.
+
+Functions as Values
+===================
+The most important feature of a function is that it can be defined and invoked. The role of a function is only this much in other programming languages but not in javascript.
+in javascript, functions can also play a role of a value, which means they can be stored in variables, can be used as arguments to other functions, can be stored as values of properties in
+an object or also can be stored as a value in an array.
+
+to understand this further consider below function definition
+
+function square(x) {return x*x;}
+
+This definition creates a new function object and then assign that object to a variable called square. the name of the function is immaterial but is the only name of the variable that
+holds the function object. the function then can be assigned to some other variable and still works in the same way.
+For Example: var b = square; 
+This statement assigns the function object to b as well and now both b and square refers to the same function object.
+
+The functions can also be assigned to properties in an object. If we do this, then they are called as methods. Functions don't even need a name as they are assigned as elements in an array.
+
+Example:  
+    var a = [function(x) {return x*x;}, 21];
+    a[0](a[1]);
+
+In this example, first element represents a function and the value passed to this function is second element of the array.
+
+Please refer app.js for examples of using functions as data.
+
+
