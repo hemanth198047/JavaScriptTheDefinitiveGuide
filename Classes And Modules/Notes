@@ -75,3 +75,13 @@ r.includes(2);
 r.foreach(console.log);
 console.log(r);
 
+In the above code, 
+1. we defined a factory "range" function that creates objects from a prototype. Notice that we use a property of range function called methods to store the prototype object that defines
+the class.
+2. range function defines two properties from and to that stores dynamic data. These are unshared, uninherited properties that defines unique state of each individual range object.
+3. range.methods is shared and inherited by all objects of this prototype. All these shared methods make use of from and to but they refer to them using this keyword so that they refer
+to the specific object on which these methods are called.
+4. the use of this is a fundamental characteristic of the methods of any class
+
+Classes and Constructors
+========================
