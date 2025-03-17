@@ -98,7 +98,7 @@ Example:
 // This is a constructor function that initializes new objects.
 // Note that it does not create or return the object. It just initializes this.
 
-function range(from, to) {
+function Range(from, to) {
     // Store the start and end points (state) of this new range object.
     // These are noninherited properties that are unique to this object.
     this.from = from;
@@ -131,4 +131,71 @@ var r = new Range(1,3);
 r.includes(2);
 r.forEach(console.log);
 console.log(r);
+
+When defining a constructor, we define with the first character with capital because Constructor function define classes and classes will have first character in caps.
+
+also notice that the constructor functions are invoked with new keyword where range() factory method is invoked without new keyword. Because the keyword constructor is invoked with new keyword, there is no need to call inherit() function to create a new object. When Constructor is invoked with new keyword, the object is created before the constructor is called and is made
+available using the this keyword. the Range() constructor has to merely initialize this. Constructors do not even need to return this newly created object. 
+
+Constructor invocation automatically creates the new object, invokes the constructor as a function on this object and then returns this new object. Another point to note is that while
+defining the prototype, in the first example, it was defined as range.method but in the second approach it was defined as Range.prototype. This is mandatory where the constructor prototype
+needs to be assigned to the prototype property only.
+
+Constructors and Class Identity
+===============================
+As we learned just now, prototype is the fundamental to the identity of a class. two objects are instances of same class only when they inherit from the same prototype object. the constructor
+function that initializes the state of the new object is not fundamental. two constructor functions may have prototype properties that points to the same prototype object. in this case
+two constructor functions can be used to create the instance of same class objects.
+
+But in both the ways, constructors acts as the public face of a class. normally, the name of the constructor is adopted as the name of the class. for example, we say Range() constructor 
+creates Range Objects. moreover, constructors are used with the instanceof operator to determine the membership of a class. If we have an object r and want to know if it is a Range object,
+we can write as r instanceOf Range.
+
+The instanceOf operator doesn't actually check whether r was created from the Range constructor but it checks whether r has a prototype same a Range prototype.
+
+The Constructor Property
+=======================
+In previous examples, we defined a number of methods inside Range.prototype and it is convenient to express those methods as properties of the prototype. But this is not mandatory to create the new objects.
+One point to note is that any javascript function can be used as a constructor but only thing needed is that that function should have a prototype property. Therefore, almost all the functions in javascript will automatically
+have the prototype property in them. The value of this property will be an object that contains a single nonenumerable constructor property. the value of this constructor property is a function object.
+
+Example:
+    var F = function() {};
+    var p = F.prototype;
+    var c = p.constructor;
+    c === F;
+
+The existence of this predefined prototype object with its constructor property means that object typically inherits a constructor property that refers to their constructor. since constructors serve as public identity of a class
+this constructor property gives class of an object
+Example:
+    var o = new F(); // This creates an object o of class F
+    o.constructor === F; // true: constructor property specifies the class
+
+In the above example, originally we have overriden the prototype property of the Range object and this new object that was assigned to the prototype property don't have a constructor defined in it. so, in this case
+the Range objects that are generated using this prototype will not have constructor property in it. We can remedy this problem by explicitly defining constructor property in the Range.prototype
+
+Range.prototype = {
+    constructor: Range,
+    includes: function(x) {
+        return this.from <= x && x <= this.to;
+    },
+    forEach: function (f) {
+        for(var x = this.from; x<= this.to; x++) {
+            f(x);
+        }
+    },
+    toString: function() {
+        return "(" + this.from + "..." + this.to + ")";
+    }
+};
+
+Another common technique is to use the predefined prototype object with its constructor property and add methods to it one at a time;
+Range.prototype.includes = function(x) {return this.from <= x && x <= this.to;};
+Range.prototype.foreach = function(f) {for(var x = Math.ceil(this.from); x <= this.to; x++) f(x);};
+Range.prototype.toString = function() {return "(" + this.from + "..." + this.to + ")";};
+
+Java-Style classes in JavaScript
+================================
+
+
 
