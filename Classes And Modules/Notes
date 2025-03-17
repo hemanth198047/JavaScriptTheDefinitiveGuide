@@ -58,8 +58,8 @@ range.methods = {
     },
     // Invoke f once for each integer in the range.
     //This works only for numeric ranges
-    foreach: function() {
-        for (var x = Math.ceil(this.from); x <= this.to; x++>) {
+    foreach: function(f) {
+        for (var x = Math.ceil(this.from); x <= this.to; x++) {
             f(x);
         }
     },
@@ -85,3 +85,50 @@ to the specific object on which these methods are called.
 
 Classes and Constructors
 ========================
+In the above example, we saw how to define a class. But this is not an idiomatic way to define a class because it didn't defined a constructor. A Constructor is a function which is designed
+specifically for initialization of a newly created object. Constructors are invoked using the new keyword. The invocation of a Constructor itself creates a new object, so that itself is enough
+to perform the initialization of newly created object. The critical feature of constructor invocations is that the prototype object of the constructor is used as the prototype of the newly
+created object. This means that all objects created from the same constructor will inherit from the same object and are therfore members of the same class. below example shows how we could
+alter the range object to create new objects using the constructor instead of a factory function.
+
+Example:
+
+// range2.js : Another class representing a range of values
+
+// This is a constructor function that initializes new objects.
+// Note that it does not create or return the object. It just initializes this.
+
+function range(from, to) {
+    // Store the start and end points (state) of this new range object.
+    // These are noninherited properties that are unique to this object.
+    this.from = from;
+    this.to = to;
+}
+
+// All range objects inherit from this object
+// Note that the property name must be "prototype" for this to work
+
+Range.prototype = {
+    // Return true if x is in the range, false otherwise
+    // This method works for textual and Date ranges as well as numeric
+    includes: function(x) {
+        return this.from <= x && x <= this.to;
+    },
+    // Invoke f once for each integer in the range
+    // This method works only for integers
+    forEach: function(f) {
+        for (var x = Math.ceil(this.from); x<= this.to; x++) {
+            f(x);
+        }
+    },
+    toString: function() {
+        return "(" + this.from + "..." + this.to + ")";
+    }
+};
+
+//Here are example usages
+var r = new Range(1,3);
+r.includes(2);
+r.forEach(console.log);
+console.log(r);
+
