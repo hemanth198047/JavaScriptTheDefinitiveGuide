@@ -1,0 +1,76 @@
+Javascript Objects are already covered earlier. In that section, each object is treated as a unique set of properties, different from every object. 
+It is often useful, however, to define a class of objects that share certain properties. Members, or instances of the classes have their own properties to hold or define their state but
+they also have properties that define their behavior. this behaviour is defined by the class and is shared by all the instances of that class. For example, imagine there is a class
+called Complex. This object or class will have properties to hold the data as well as properties to define the behavior of addition and multiplication. the data properties will be different
+for each of the instances of this class whereas the behavior properties will be same for all the instances.
+
+In Javascript, classes are based on prototype-based inheritence mechanism. If two objects inherits the properties from the same object, then they are said to be instances of that object.
+If two objects inherits their properties from the same object, then we say these two objects are created and initialized from the same constructor function. the classes in javascript are quite
+different from the classes that are defined in strongly typed languages like java and c++. One of the important features of javascript classes are that they are dynamically extendible.
+
+Classes can be thought of as types.
+
+Duck Typing
+===========
+Duck Typing refers to a concept that refers to how a language determines whether an object can be used in a particular context or not based on its properties and methods rather than the
+actual type or class. The term comes from the saying "If it looks like a duck and quacks like a duck, then it probably is a duck". This means that, in the context of programming, You don't
+check the type of an object directly. Instead, you check whether the object has the required properties and methods.
+
+Duck typing allows for more flexible and dynamic coding as objects interact with each other based on their properties and method instead of their rigid types. it enables polymorphism
+where different objects that share similar behaviour can be used interchangeably.
+
+Defining a class is a way of writing moduler, reusable code.
+
+Classes and Prototypes
+======================
+In javascript, a class is a set of objects that inherits properties from the same prototype object. the prototype object, therefore, is the central feature of a class.
+Earlier, we saw an example of inherit() method which returns a new object that inherits from a given prototype object. if we define a prototype object, and then use inherit() function
+to create new objects using this prototype object, we defined a javascript class. Usually, the instances of a class requires further initialization and it is common to define a function that
+creates and initializes a new object.
+
+Refer app.js for inherit() function
+
+An example to define a function that creates and initializes a new object is below
+In this example, we will define a prototype object for a class that represents a range of values and also defines a "factory" function that creates and initializes a new instance of a class.
+
+// range.js : A class representing a range of values
+// This is a factory function that returns a new range object
+function range(from, to) {
+    // Use the inherit() function to create a new object that inherits from the prototype object defined below. The prototype object is stored
+    // as a property of this function, and defines the shared methods (behaviour) for all range objects.
+    var r = inherit(range.methods);
+
+    // Store the start and end points (state) of this new range object 
+    // These are non-inherited properties that are unique to this object.
+    r.from = from;
+    r.to = to;
+
+    // Finally return the new object
+    return r;
+}
+
+// This prototype object defines methods inherited by all range objects
+range.methods = {
+    // Return true if x is in the range, false otherwise
+    // This works for textual and Date ranges as well as numeric
+    includes: function (x) {
+        return this.from <= x && x <= this.to;
+    },
+    // Invoke f once for each integer in the range.
+    //This works only for numeric ranges
+    foreach: function() {
+        for (var x = Math.ceil(this.from); x <= this.to; x++>) {
+            f(x);
+        }
+    },
+    // Return a string representation of a range
+    toString: function() {
+        return "(" + this.from + "..." + this.to + ")");
+    }
+};
+
+// Here's example uses of a range object
+var r = range(1,3);
+r.includes(2);
+r.foreach(console.log);
+console.log(r);
