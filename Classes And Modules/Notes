@@ -65,7 +65,7 @@ range.methods = {
     },
     // Return a string representation of a range
     toString: function() {
-        return "(" + this.from + "..." + this.to + ")");
+        return "(" + this.from + "..." + this.to + ")";
     }
 };
 
@@ -74,3 +74,4 @@ var r = range(1,3);
 r.includes(2);
 r.foreach(console.log);
 console.log(r);
+
