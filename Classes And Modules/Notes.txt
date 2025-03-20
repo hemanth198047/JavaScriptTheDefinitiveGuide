@@ -197,5 +197,57 @@ Range.prototype.toString = function() {return "(" + this.from + "..." + this.to 
 Java-Style classes in JavaScript
 ================================
 
+If you have already programmed in languages like java, you might be knowing about four members types.
+1. instancefields : These are per instance properties or variables that holds the individual objects state.
+2. instancemethods : These are the method shared by all the instances that are invoked through individual objects
+3. classfields : These are the properties associated with class rather than objects
+4. classmethods : These are the methods associated to the class rather than objects.
 
+One way that javascript is different from java is that functions in javascript are treated as values. despite these differences, we can simulate the 4 techniques of java in javascript as well.
 
+Constructor Objects
+-------------------
+As we already learned, constructor defines the class of an object. Properties you add to this function serves as class fields and class methods.
+
+Prototype Objects
+-----------------
+The properties of this object are inherited by all instances of the class and properties whose values are functions behaves like instance methods of a class
+
+Instance Objects
+----------------
+Each instance of a class is an object in its own right, and properties defined directly on an instance are not shared by any other instances. Nonfunction properties defined on instances
+behaves as the instance fields of the class.
+
+We can reduce the class definition mechanism in javascript to a three-step algorithm
+1. Write constructor function that sets instance properties on the objects.
+2. define instance methods on the prototype object of the constructor
+3. define class properties and class properties on the constructor itself.
+
+we can even implement this 3 step algorith as defineClass() function. Refer app.js for this implementation.
+
+Although we can emulate java style class memebers in javascript, There are significant number of java features that java script will not support. In java, say for example, the instance
+fields inside the instance methods can be accessed as if they are local variables to that method but this is not the case in javascript. In javascript, even if we are trying to access
+the instance variables inside the instance methods, we need to access them using the "this" keyword.
+
+Even though Javascript will not support the concepts like private and final, these can be emulated in javascript using the variables defined inside the closure for private variables and 
+there is a scope for defining the constant variables.
+
+Augmenting Classes
+==================
+The havascript inheritence mechanism is dynamic in nature. This means, the inheritence mechanism depends on prototype object and all the objects that are inherited from one particular object,
+will inherit properties from the prototype of the parent class. So, when ever there is a change in the properties and methods inside the prototype object after the child objects are created,
+these changes will reflect down in the child objects also dynamically.
+
+This means that we can augment javascript classes simply by adding methods in its prototype objects. The prototype objects of built in javascript classes are also open like this.
+It is possible to add methods on prototypes by making them available for all the objects inheriting from that prototype.
+
+Classes and types
+=================
+Remember that the built-in objects of javascript can be distinguished based on their class attributes. We are going to discuss the techniques of creating classes and objects and when 
+objects are created using the class techniques discussed here, the class attribute always returns "Object" and hence the class attribute is of no use. to solve this problem, we discuss
+3 techniques to determine the class of an arbitrary object. using instanceof operator, using constructor property and the name of the constructor function.
+
+The instanceof operator
+=======================
+in instanceof operator, left hand side should be an object whose class needs to be tested and right hand side should be the constructor function that names a class. this means, the expression
+o instanceof c evaluates to true if o is inherited from c.prototype. this inheritence need not be direct. that can be in chain form as well.
